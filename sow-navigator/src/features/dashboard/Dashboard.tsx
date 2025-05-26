@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Dashboard.less';
+import { Background } from '@xyflow/react';
 
 interface DashboardProps {
     isVisible: boolean;
 }
 
-interface CaseData {
-    clientId: string;
-    stage: string;
-    manualIntervention: boolean;
-    assignedUser: string;
-    riskCategory: 'High' | 'Medium' | 'Low';
+interface ClientData {
+    name: string;
+    brNo: string;
+    totalAssets: string;
+    ytdChange: string;
+    ytdChangePercentage: string;
+    numberOfPKRTasks: number;
+    highRiskFlag?: boolean;
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ isVisible }) => {
@@ -20,36 +23,42 @@ const Dashboard: React.FC<DashboardProps> = ({ isVisible }) => {
 
     // Dummy data for the dashboard
     const dashboardStats = {
-        openCases: 2,
-        closedCases: 53,
-        sgPercentage: 65,
-        hkPercentage: 35,
-        highRisk: 15,
-        mediumRisk: 60,
-        lowRisk: 25
+        totalClients: 23,
+        clientsInKYCCycle: 2,
+        lowRiskPercentage: 40,
+        mediumRiskPercentage: 40,
+        highRiskPercentage: 20,
+        onboardingPercentage: 10,
+        pkrPercentage: 90,
+        singaporePercentage: 60,
+        hongKongPercentage: 40
     };
 
-    const caseData: CaseData[] = [
+    const clientsData: ClientData[] = [
         {
-            clientId: 'SOW-2025-001',
-            stage: 'Document Review',
-            manualIntervention: true,
-            assignedUser: 'John Doe',
-            riskCategory: 'High'
+            name: 'Sophia Nguyen',
+            brNo: '1234-567890',
+            totalAssets: 'USD 18,000,000',
+            ytdChange: '4,320,000',
+            ytdChangePercentage: '+24%',
+            numberOfPKRTasks: 20,
+            highRiskFlag: true
         },
         {
-            clientId: 'SOW-2025-002',
-            stage: 'Background Check',
-            manualIntervention: false,
-            assignedUser: 'John Doe',
-            riskCategory: 'Medium'
+            name: 'Ethan Lau',
+            brNo: '1234-567891',
+            totalAssets: 'USD 8,888,880',
+            ytdChange: '888,888',
+            ytdChangePercentage: '+10%',
+            numberOfPKRTasks: 2
         },
         {
-            clientId: 'SOW-2025-003',
-            stage: 'Final Approval',
-            manualIntervention: true,
-            assignedUser: 'John Doe',
-            riskCategory: 'Low'
+            name: 'Chloe Tan',
+            brNo: '1234-567892',
+            totalAssets: 'USD 8,888,880',
+            ytdChange: '',
+            ytdChangePercentage: '',
+            numberOfPKRTasks: 0
         }
     ];
 
@@ -60,9 +69,9 @@ const Dashboard: React.FC<DashboardProps> = ({ isVisible }) => {
         }
     };
 
-    const handleViewCase = (caseId: string) => {
-        // Navigate to the PKR status page for the selected case
-        navigate(`/case/${caseId}`);
+    const handleRunPKR = (clientName: string) => {
+        // Navigate to the PKR status page for the selected client
+        navigate(`/case/${clientName.toLowerCase().replace(' ', '-')}`);
     };
 
     if (!isVisible) return null;
@@ -70,101 +79,147 @@ const Dashboard: React.FC<DashboardProps> = ({ isVisible }) => {
     return (
         <>
             <div className="dashboard">
-                <div className="dashboard-header">
-                    <h1>Client Permanent KYC Dashboard</h1>
-                    <p className="subtitle">Monitor and manage PKR cases</p>
-                </div>
-
-                {/* Statistics Cards */}
-                <div className="stats-grid">
-                    <div className="stat-card">
-                        <div className="stat-number">{dashboardStats.openCases}</div>
-                        <div className="stat-label">Open Cases Pending SOW</div>
-                    </div>
-
-                    <div className="stat-card">
-                        <div className="stat-number">{dashboardStats.closedCases}</div>
-                        <div className="stat-label">Cases Closed Since Jan 2025</div>
-                    </div>
-
-                    <div className="stat-card">
-                        <div className="stat-number">{dashboardStats.sgPercentage}% / {dashboardStats.hkPercentage}%</div>
-                        <div className="stat-label">Singapore/Hong Kong Distribution</div>
-                    </div>
-
-                    <div className="stat-card">
-                        <div className="risk-breakdown">
-                            <div className="risk-item high">H: {dashboardStats.highRisk}%</div>
-                            <div className="risk-item medium">M: {dashboardStats.mediumRisk}%</div>
-                            <div className="risk-item low">L: {dashboardStats.lowRisk}%</div>
+                {/* Horizontal Statistics Banner */}
+                <div className="stats-banner">
+                    <div className="stats-section clients-current-section">
+                        <div className="stat-group">
+                            <div className="stat-number">{dashboardStats.totalClients}</div>
+                            <div className="stat-label">Clients</div>
                         </div>
-                        <div className="stat-label">Risk Distribution</div>
+                    </div>
+                    <div className="stats-section clients-kyc-section">
+                        <div className="stat-group">
+                            <div className="stat-number">{dashboardStats.clientsInKYCCycle}</div>
+                            <div className="stat-label">Clients in KYC Cycle</div>
+                        </div>
+                    </div>
+
+                    <div className="stats-section risk-section">
+                        <div className="section-label">Risk category</div>
+                        <div className="stat-groups-container">
+                            <div className="stat-group">
+                                <div className="stat-number">{dashboardStats.lowRiskPercentage}%</div>
+                                <div className="stat-label">Low</div>
+                            </div>
+                            <div className="stat-group">
+                                <div className="stat-number">{dashboardStats.mediumRiskPercentage}%</div>
+                                <div className="stat-label">Medium</div>
+                            </div>
+                            <div className="stat-group">
+                                <div className="stat-number high-risk">{dashboardStats.highRiskPercentage}%</div>
+                                <div className="stat-label">High</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="stats-section journey-section">
+                        <div className="section-label">% by journey</div>
+                        <div className="stat-groups-container">
+                            <div className="stat-group">
+                                <div className="stat-number">{dashboardStats.onboardingPercentage}%</div>
+                                <div className="stat-label">Onboarding</div>
+                            </div>
+                            <div className="stat-group">
+                                <div className="stat-number">{dashboardStats.pkrPercentage}%</div>
+                                <div className="stat-label">PKR</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="stats-section location-section">
+                        <div className="section-label">Location</div>
+                        <div className="stat-groups-container">
+                            <div className="stat-group">
+                                <div className="stat-number">{dashboardStats.singaporePercentage}%</div>
+                                <div className="stat-label">Singapore</div>
+                            </div>
+                            <div className="stat-group">
+                                <div className="stat-number">{dashboardStats.hongKongPercentage}%</div>
+                                <div className="stat-label">Hong Kong</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                {/* Client ID Input */}
-                <div className="client-search">
-                    <div className="search-box">
-                        <input
-                            type="text"
-                            placeholder="Search Client with ID"
-                            value={clientId}
-                            onChange={(e) => setClientId(e.target.value)}
-                            className="client-input"
-                        />
-                        <button
-                            onClick={handleProceed}
-                            className="proceed-button"
-                            disabled={!clientId.trim()}
-                        >
-                            Proceed
-                        </button>
-                    </div>
-                </div>
+                <div className="dashboard-content">
+                    {/* Main Content Area */}
+                    <div className="main-content">
+                        {/* OnePass AI Assistant */}
+                        <div className="onepass-ai">
+                            <div className="ai-icon-container">
+                                <div className="ai-icon">◯</div>
+                            </div>
+                            <div className="ai-text">OnePass AI - Happy to assist you</div>
+                            <div className="ai-mic-container">
+                                <div className="ai-mic">🎤</div>
+                            </div>
+                        </div>
 
-                {/* Cases Table */}
-                <div className="cases-table-container">
-                    <h2>Open Cases</h2>
-                    <div className="table-wrapper">
-                        <table className="cases-table">
-                            <thead>
-                                <tr>
-                                    <th>Client ID</th>
-                                    <th>Current Stage</th>
-                                    <th>Manual Intervention</th>
-                                    <th>Assigned User</th>
-                                    <th>Risk Category</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {caseData.map((case_, index) => (
-                                    <tr key={index}>
-                                        <td className="client-id">{case_.clientId}</td>
-                                        <td>{case_.stage}</td>
-                                        <td>
-                                            <span className={`intervention-badge ${case_.manualIntervention ? 'required' : 'not-required'}`}>
-                                                {case_.manualIntervention ? 'Yes' : 'No'}
-                                            </span>
-                                        </td>
-                                        <td>{case_.assignedUser}</td>
-                                        <td>
-                                            <span className={`risk-badge ${case_.riskCategory.toLowerCase()}`}>
-                                                {case_.riskCategory}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <button
-                                                className="view-case-button"
-                                                onClick={() => handleViewCase(case_.clientId)}
-                                            >
-                                                View Case
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                        {/* Continuous Client Monitoring */}
+                        <div className="client-monitoring">
+                            <div className="section-header">
+                                <div className="section-icon">◎</div>
+                                <h2>Continuous Client Monitoring</h2>
+                            </div>
+
+                            {/* Clients Table */}
+                            <div className="clients-table-container">
+                                <table className="clients-table">
+                                    <thead>
+                                        <tr>
+                                            <th className="name-column">Name <span className="sort-icon">▼</span></th>
+                                            <th>BR no.</th>
+                                            <th>
+                                                Total assets
+                                                <div className="secondary-header">YTD change <span className="sort-icon">▼</span></div>
+                                            </th>
+                                            <th>Number of PKR tasks <span className="sort-icon">▼</span></th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {clientsData.map((client, index) => (
+                                            <tr key={index}>
+                                                <td className="name-column">{client.name}</td>
+                                                <td>{client.brNo}</td>
+                                                <td className="assets-column">
+                                                    <div>{client.totalAssets}</div>
+                                                    {client.ytdChange && (
+                                                        <div className="ytd-change">
+                                                            {client.ytdChangePercentage} {client.ytdChange}
+                                                        </div>
+                                                    )}
+                                                </td>
+                                                <td>
+                                                    {client.numberOfPKRTasks > 0 ? (
+                                                        <div className="pkr-tasks">
+                                                            <span className="sow-link">{client.numberOfPKRTasks} SOW</span>
+                                                            {client.highRiskFlag && (
+                                                                <span className="risk-triangle"> (2 🔺)</span>
+                                                            )}
+                                                        </div>
+                                                    ) : (
+                                                        <span>0</span>
+                                                    )}
+                                                </td>
+                                                <td>
+                                                    {client.numberOfPKRTasks > 0 && (
+                                                        <div className="pkr-button-container">
+                                                            <button
+                                                                className="run-pkr-button"
+                                                                onClick={() => handleRunPKR(client.name)}
+                                                            >
+                                                                Let's run the PKR for {client.name.split(' ')[0]}
+                                                            </button>
+                                                        </div>
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
