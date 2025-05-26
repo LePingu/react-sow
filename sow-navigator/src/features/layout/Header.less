@@ -1,0 +1,176 @@
+// Import global variables or mixins if they exist and are needed
+// e.g., @import '../../styles/variables.less';
+
+.app-header {
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff; // White background for the entire header
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // Subtle shadow for separation
+    padding: 0; // Remove padding if top-bar and tab-navigation handle it
+    font-family: Arial, sans-serif; // Basic font
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.5rem; // Padding for top bar
+}
+
+.logo-title {
+    display: flex;
+    align-items: center;
+
+    .app-logo {
+        height: 32px; // Adjust size as needed
+        width: 32px;
+        margin-right: 1.25rem; // Increased space
+    }
+
+    .app-name {
+        font-size: 1.5rem; // Larger font for app name
+        font-weight: 600;
+        padding-left: 25px;
+        color: #333;
+    }
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem; // Space between elements
+
+    .user-icon {
+        font-size: 1.2rem; // Adjust size as needed
+        color: black; // Black and white icon
+        margin-right: 0.25rem; // Space between icon and label
+    }
+
+    .client-advisor-label {
+        font-size: 0.9rem;
+        color: #555;
+        margin-right: 0.5rem;
+    }
+
+    .user-dropdown {
+        position: relative;
+
+        .user-button {
+            background-color: transparent;
+            border: 1px solid transparent; // Make border transparent or remove
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #333;
+
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.05); // Slight hover for transparent button
+            }
+
+            .dropdown-arrow {
+                margin-left: 0.5rem;
+                font-size: 0.7rem;
+            }
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            min-width: 150px; // Ensure dropdown is wide enough
+            margin-top: 0.25rem;
+
+
+            a {
+                display: block;
+                padding: 0.75rem 1rem;
+                text-decoration: none;
+                color: #333;
+                font-size: 0.9rem;
+
+                &:hover {
+                    background-color: #f0f0f0;
+                }
+            }
+        }
+    }
+
+    .bookmarks-button {
+        background-color: transparent;
+        border: 1px solid #ccc;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        font-size: 0.9rem;
+        color: #333;
+
+        &:hover {
+            background-color: #f0f0f0;
+        }
+
+        .star-icon {
+            margin-right: 0.5rem;
+            color: black; // Simple black star
+            font-size: 1rem; // Adjust size if needed
+        }
+    }
+}
+
+.tab-navigation {
+    display: flex;
+    align-items: center;
+    padding: 0 1.5rem; // Padding for tab bar
+    background-color: #ffffff; // White background for tabs section
+    height: 50px; // Fixed height for tab bar
+}
+
+.tab-item {
+    padding: 0.75rem 1.25rem; // Padding within each tab
+    margin-right: 0.5rem; // Space between tabs
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    font-size: 1rem;
+    color: #555; // Default tab text color
+    position: relative; // For the underline
+    transition: color 0.2s ease;
+
+    &:hover:not(.disabled) {
+        color: #000; // Darker text on hover for enabled tabs
+    }
+
+    &.active {
+        color: #030303; // Red text for active tab
+        font-weight: 600; // Bold text for active tab
+
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: -1px; // Position underline just below the text, adjust if border-bottom is used on parent
+            left: 0;
+            right: 0;
+            height: 3px; // Thickness of the underline
+            background-color: #d90000; // Bold red underline
+            border-radius: 1.5px; // Slightly rounded ends for the underline
+        }
+    }
+
+    &.disabled {
+        color: #aaa; // Greyed out text for disabled tabs
+        cursor: not-allowed;
+    }
+
+    &:last-child {
+        margin-right: 0;
+    }
+}

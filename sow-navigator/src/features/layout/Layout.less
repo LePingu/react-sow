@@ -1,0 +1,43 @@
+@import '../../styles/variables.less';
+@import '../../styles/mixins.less';
+
+.layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: @primary-bg;
+    // overflow: hidden; // Remove this if main-content-wrapper handles scrolling
+}
+
+.main-content-wrapper {
+    flex-grow: 1; // Takes remaining vertical space
+    position: relative; // For positioning children like backgrounds
+    display: flex; // To allow content to grow
+    flex-direction: column;
+    overflow-y: auto; // Allow this section to scroll if content overflows
+}
+
+.grid-background {
+    position: absolute; // Relative to main-content-wrapper
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        linear-gradient(@grid-color 1px, transparent 1px),
+        linear-gradient(90deg, @grid-color 1px, transparent 1px);
+    background-size: @grid-size @grid-size;
+    pointer-events: none;
+    z-index: @z-background; // Ensure it's behind .content
+}
+
+// Assuming ParticleBackground is also positioned absolutely or similarly
+// No specific styles for ParticleBackground here, handled by its own component
+
+.content {
+    position: relative;
+    z-index: @z-content; // Ensure content is above backgrounds within the wrapper
+    flex-grow: 1; // Allow content to take available space in the wrapper
+    // Add padding or other styles as needed for the main content area
+    padding: 1rem; // Example padding
+}

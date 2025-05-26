@@ -1,0 +1,88 @@
+// Color Variables - Professional Red, White, Grey & Black Theme
+@primary-bg: #ffffff; // Clean white background
+@primary-red: #dc2626; // Professional red
+@secondary-red: #b91c1c; // Darker red for hover states
+@primary-white: #ffffff;
+@primary-black: #000000;
+@dark-grey: #374151; // Dark grey for text
+@medium-grey: #6b7280; // Medium grey for secondary text
+@light-grey: #f3f4f6; // Light grey for backgrounds
+@border-grey: #e5e7eb; // Light grey for borders
+@success-green: #10B981;
+
+// Legacy color support (mapped to new professional colors)
+@primary-coral: @primary-red;
+@secondary-coral: @secondary-red;
+@primary-lavender: @medium-grey;
+@secondary-lavender: @dark-grey;
+@primary-purple: @primary-red;
+@primary-violet: @secondary-red;
+@secondary-purple: @secondary-red;
+
+@success-color: @success-green;
+@text-primary: @dark-grey;
+@text-secondary: @medium-grey;
+@text-muted: #9ca3af;
+@text-color: @text-primary;
+
+// Gradients - Professional red and grey gradients
+@gradient-primary: linear-gradient(135deg, @primary-red 0%, @secondary-red 100%);
+@gradient-title: linear-gradient(135deg, @primary-red 0%, @dark-grey 50%, @primary-black 100%);
+@gradient-progress: linear-gradient(90deg, @primary-red, @secondary-red);
+@gradient-success: linear-gradient(90deg, @success-green, lighten(@success-green, 10%));
+
+// Grid and Background
+@grid-color: rgba(0, 0, 0, 0.02);
+@grid-size: 50px;
+
+// Professional card styling - clean and minimal
+@glass-bg: rgba(255, 255, 255, 0.95);
+@glass-bg-hover: rgba(255, 255, 255, 1);
+@glass-border: @border-grey;
+@glass-blur: blur(10px);
+
+// Spacing
+@spacing-xs: 0.25rem;
+@spacing-sm: 0.5rem;
+@spacing-md: 1rem;
+@spacing-lg: 1.5rem;
+@spacing-xl: 2rem;
+@spacing-xxl: 3rem;
+
+// Border radius - Reduced for professional look
+@border-radius-sm: 4px;
+@border-radius-md: 6px;
+@border-radius-lg: 8px;
+@border-radius-round: 50%;
+
+// Shadows - Clean and subtle
+@shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+@shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+@shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+@shadow-glow: 0 4px 20px rgba(220, 38, 38, 0.15); // Subtle red glow
+
+// Transitions
+@transition-fast: 0.15s ease;
+@transition-normal: 0.3s ease;
+@transition-slow: 0.5s ease;
+
+// Z-index layers
+@z-background: 0;
+@z-particles: 1;
+@z-content: 2;
+@z-modal: 1000;
+
+// Font sizes
+@font-xs: 0.8rem;
+@font-sm: 0.9rem;
+@font-base: 1rem;
+@font-lg: 1.1rem;
+@font-xl: 1.3rem;
+@font-xxl: 2rem;
+@font-xxxl: 3rem;
+
+// Breakpoints
+@mobile: 480px;
+@tablet: 768px;
+@desktop: 1024px;
+@large: 1200px;

@@ -1,0 +1,23 @@
+{
+    "name": "Flowable Dev Container",
+    "dockerFile": "Dockerfile",
+    "runArgs": [
+        "--network=host",
+    ],
+    "customizations": {
+        "vscode": {
+            "vscode": {
+                "extensions": [
+                    "dbaeumer.vscode-eslint", // For JavaScript/React linting
+                    "esbenp.prettier-vscode",
+                ]
+            }
+        }
+    },
+    "forwardPorts": [
+        5173, // For React dev server
+        8080 // For Flowable/Spring Boot backend
+    ],
+    "postCreateCommand": "echo 'Dev container created successfully. Node.js are installed.'"
+    // "remoteUser": "vscode"
+}

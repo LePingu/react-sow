@@ -1,0 +1,16 @@
+@import '../../styles/variables.less';
+@import '../../styles/mixins.less';
+
+.arrow-container {
+    .center-flex();
+}
+
+.arrow {
+    color: @primary-purple;
+    .smooth-transition();
+
+    &:hover {
+        color: @primary-violet;
+        transform: scale(1.1);
+    }
+}

@@ -1,0 +1,115 @@
+@import './variables.less';
+@import './mixins.less';
+
+/* Global Styles */
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    color-scheme: light;
+    color: @text-primary;
+    background-color: @primary-bg;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    background-color: @primary-bg;
+    overflow-x: hidden;
+}
+
+#root {
+    min-height: 100vh;
+}
+
+/* Global utility classes */
+.text-center {
+    text-align: center;
+}
+
+.hidden {
+    display: none;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* App Container Styles */
+.app-container {
+    .center-flex();
+    flex-direction: column;
+    min-height: 100vh;
+    padding: @spacing-xl;
+    text-align: center;
+
+    h1 {
+        font-size: @font-xxxl;
+        font-weight: 700;
+        margin-bottom: @spacing-md;
+        .gradient-text(@gradient-primary);
+        text-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+        font-size: @font-lg;
+        color: @text-secondary;
+        margin-bottom: @spacing-xxl;
+        opacity: 0.9;
+    }
+
+    .processing-flow {
+        .center-flex();
+        flex-direction: column;
+        gap: @spacing-xl;
+        width: 100%;
+        max-width: 600px;
+    }
+}
+
+/* Reset Button */
+.reset-button {
+    position: fixed;
+    top: @spacing-xl;
+    left: @spacing-xl;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(102, 126, 234, 0.3);
+    color: @text-primary;
+    padding: @spacing-md @spacing-lg;
+    border-radius: @border-radius-md;
+    font-size: @font-sm;
+    font-weight: 500;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    .smooth-transition(@transition-fast);
+    z-index: @z-modal;
+
+    &:hover {
+        background: rgba(102, 126, 234, 0.2);
+        border-color: @primary-coral;
+        transform: translateY(-2px);
+        box-shadow: @shadow-md;
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}

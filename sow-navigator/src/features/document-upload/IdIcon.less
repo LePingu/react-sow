@@ -1,0 +1,20 @@
+@import '../../styles/variables.less';
+@import '../../styles/mixins.less';
+
+.id-icon-container {
+    .center-flex();
+}
+
+.id-icon {
+    padding: @spacing-md;
+    border-radius: @border-radius-round;
+    background: rgba(102, 126, 234, 0.1);
+    border: 2px solid @primary-purple;
+    color: @primary-purple;
+    .smooth-transition();
+
+    &:hover {
+        background: rgba(102, 126, 234, 0.2);
+        box-shadow: @shadow-md;
+    }
+}

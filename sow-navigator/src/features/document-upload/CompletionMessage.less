@@ -1,0 +1,64 @@
+@import '../../styles/variables.less';
+@import '../../styles/mixins.less';
+
+.completion-message {
+    .center-flex();
+    flex-direction: column;
+    gap: @spacing-md;
+    padding: @spacing-xl;
+    text-align: center;
+    color: @text-color;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+
+    &__icon {
+        width: 64px;
+        height: 64px;
+        background: @success-color;
+        border-radius: 50%;
+        .center-flex();
+        margin-bottom: @spacing-md;
+
+        svg {
+            width: 32px;
+            height: 32px;
+            color: white;
+        }
+    }
+
+    &__title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: @spacing-sm;
+        color: @success-color;
+    }
+
+    &__subtitle {
+        font-size: 1rem;
+        opacity: 0.8;
+        margin-bottom: @spacing-lg;
+    }
+
+    &__button {
+        background: @primary-purple;
+        color: white;
+        border: none;
+        padding: @spacing-md @spacing-xl;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all @transition-fast ease;
+
+        &:hover {
+            background: @secondary-purple;
+            transform: translateY(-2px);
+            box-shadow: @shadow-lg;
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+    }
+}

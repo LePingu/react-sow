@@ -1,0 +1,142 @@
+// Utility Mixins
+.glass-morphism(@bg: @glass-bg, @border: @glass-border) {
+    background: @bg;
+    backdrop-filter: @glass-blur;
+    border: 1px solid @border;
+    border-radius: @border-radius-md;
+}
+
+.gradient-text(@gradient: @gradient-primary) {
+    background: @gradient;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.center-flex() {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.column-flex() {
+    display: flex;
+    flex-direction: column;
+}
+
+.smooth-transition(@duration: @transition-normal) {
+    transition: all @duration;
+}
+
+.hover-lift() {
+    .smooth-transition();
+
+    &:hover {
+        transform: translateY(-2px);
+    }
+}
+
+.responsive(@breakpoint) when (@breakpoint =mobile) {
+    @media (max-width: @mobile) {
+        @content();
+    }
+}
+
+.responsive(@breakpoint) when (@breakpoint =tablet) {
+    @media (max-width: @tablet) {
+        @content();
+    }
+}
+
+.responsive(@breakpoint) when (@breakpoint =desktop) {
+    @media (min-width: @desktop) {
+        @content();
+    }
+}
+
+// Animation mixins
+.fade-in(@delay: 0s) {
+    opacity: 0;
+    animation: fadeIn @transition-slow @delay forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+.pulse-animation() {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+.spin-animation() {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+// Button mixins
+.button-primary() {
+    padding: @spacing-md @spacing-lg;
+    background: @gradient-primary;
+    border: none;
+    border-radius: @border-radius-md;
+    color: @primary-white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all @transition-normal;
+    font-size: @font-base;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: @shadow-lg;
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+.button-secondary() {
+    padding: @spacing-md @spacing-lg;
+    background: @glass-bg;
+    border: 1px solid @border-grey;
+    border-radius: @border-radius-md;
+    color: @text-primary;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all @transition-normal;
+    font-size: @font-base;
+
+    &:hover {
+        background: @glass-bg-hover;
+        border-color: @primary-red;
+        transform: translateY(-2px);
+        box-shadow: @shadow-md;
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
