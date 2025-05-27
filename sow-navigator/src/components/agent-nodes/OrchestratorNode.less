@@ -1,0 +1,120 @@
+@import '../../styles/variables.less';
+@import '../../styles/mixins.less';
+
+// Orchestrator Node Styles
+.orchestrator-flow-node {
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    border: 2px solid #b91c1c;
+    border-radius: 16px;
+    padding: 20px;
+    min-width: 300px;
+    color: white;
+    box-shadow: 0 8px 32px rgba(220, 38, 38, 0.3);
+    animation: gentle-glow 3s ease-in-out infinite;
+
+    .orchestrator-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+
+        .orchestrator-icon {
+            font-size: 1.5rem;
+            margin-right: 10px;
+            animation: rotate 8s linear infinite;
+        }
+
+        .orchestrator-info {
+            h3 {
+                margin: 0;
+                font-size: 1.2rem;
+                font-weight: 600;
+            }
+
+            .status-badge {
+                background: rgba(255, 255, 255, 0.2);
+                padding: 2px 8px;
+                border-radius: 12px;
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+        }
+    }
+
+    .orchestrator-message {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        line-height: 1.4;
+        margin-bottom: 8px;
+    }
+
+    .timestamp {
+        font-size: 0.8rem;
+        opacity: 0.8;
+    }
+}
+
+// Simplified orchestrator node for React Flow
+.orchestrator-node {
+    background: white;
+    border: 2px solid @primary-red;
+    border-radius: 12px;
+    padding: 16px;
+    min-width: 300px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+
+    &:hover {
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+    }
+
+    .orchestrator-header {
+        h3 {
+            margin: 0 0 12px 0;
+            color: @primary-red;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+    }
+
+    .orchestrator-content {
+        p {
+            margin: 0 0 8px 0;
+            color: @text-primary;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .timestamp {
+            color: @text-secondary;
+            font-size: 0.8rem;
+            font-style: italic;
+        }
+    }
+}
+
+// Orchestrator animations
+@keyframes gentle-glow {
+
+    0%,
+    100% {
+        box-shadow: 0 8px 32px rgba(220, 38, 38, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 8px 32px rgba(220, 38, 38, 0.5);
+    }
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}

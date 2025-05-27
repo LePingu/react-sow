@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './SummaryReport.less';
 
 interface SummaryReportProps {
@@ -14,10 +15,12 @@ interface ReportSection {
     score?: number;
 }
 
-const SummaryReport: React.FC<SummaryReportProps> = ({ isVisible, onClose, caseId }) => {
+const SummaryReport: React.FC<SummaryReportProps & { onDownloadReport?: () => void }> = ({ isVisible, onClose, caseId, onDownloadReport }) => {
     const [animationStage, setAnimationStage] = useState(0);
     const [currentSection, setCurrentSection] = useState(0);
+    const navigate = useNavigate();
 
+    // All numbers set to 100%
     const reportData: ReportSection[] = [
         {
             title: 'Document Verification',
@@ -27,7 +30,7 @@ const SummaryReport: React.FC<SummaryReportProps> = ({ isVisible, onClose, caseI
                 'Address verification completed',
                 'Digital signatures verified'
             ],
-            score: 95
+            score: 100
         },
         {
             title: 'Risk Assessment',
@@ -37,7 +40,7 @@ const SummaryReport: React.FC<SummaryReportProps> = ({ isVisible, onClose, caseI
                 'No adverse media findings',
                 'Source of wealth documented'
             ],
-            score: 88
+            score: 100
         },
         {
             title: 'Compliance Screening',
@@ -47,7 +50,7 @@ const SummaryReport: React.FC<SummaryReportProps> = ({ isVisible, onClose, caseI
                 'PEP status: Not applicable',
                 'Watchlist screening passed'
             ],
-            score: 92
+            score: 100
         },
         {
             title: 'Final Recommendation',
@@ -57,7 +60,7 @@ const SummaryReport: React.FC<SummaryReportProps> = ({ isVisible, onClose, caseI
                 'Standard monitoring recommended',
                 'No additional due diligence required'
             ],
-            score: 91
+            score: 100
         }
     ];
 
@@ -144,7 +147,7 @@ const SummaryReport: React.FC<SummaryReportProps> = ({ isVisible, onClose, caseI
                 {/* Overall Score */}
                 <div className={`overall-score ${currentSection >= reportData.length ? 'visible' : ''}`}>
                     <div className="score-circle">
-                        <div className="score-value">91%</div>
+                        <div className="score-value">100%</div>
                         <div className="score-label">Overall Score</div>
                     </div>
                     <div className="recommendation">
@@ -157,8 +160,8 @@ const SummaryReport: React.FC<SummaryReportProps> = ({ isVisible, onClose, caseI
 
                 {/* Action Buttons */}
                 <div className="report-actions">
-                    <button className="action-button secondary">Download Report</button>
-                    <button className="action-button primary" onClick={onClose}>
+                    <button className="action-button secondary" onClick={onDownloadReport}>Access full report</button>
+                    <button className="action-button primary" onClick={() => navigate('/')}>
                         Continue to Dashboard
                     </button>
                 </div>

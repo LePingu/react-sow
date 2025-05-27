@@ -1,0 +1,234 @@
+@import '../styles/variables.less';
+@import '../styles/mixins.less';
+
+// Add beautiful animations
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+.stats-banner {
+    display: flex;
+    justify-content: space-between;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.8) 100%);
+    border: 1.5px solid rgba(33, 33, 33, 0.4);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(20px);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        0 1px 0 rgba(255, 255, 255, 0.5) inset;
+    width: fit-content;
+    overflow: hidden;
+    position: relative;
+
+    // Add a subtle shimmer effect
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        animation: shimmer 3s infinite;
+    }
+
+    .stats-section {
+        display: flex;
+        flex-direction: column;
+        padding: 1.2rem;
+        margin: 0.3rem;
+        width: fit-content;
+        background: @grey-gradient;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 16px;
+        box-shadow:
+            0 4px 16px rgba(0, 0, 0, 0.05),
+            0 1px 0 rgba(255, 255, 255, 0.6) inset;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        animation: float 6s ease-in-out infinite;
+
+        // Add different animation delays for staggered effect
+        &:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        &:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        &:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        &:nth-child(4) {
+            animation-delay: 1.5s;
+        }
+
+        &:nth-child(5) {
+            animation-delay: 2s;
+        }
+
+        // Add a subtle gradient overlay on hover
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.02) 0%, rgba(239, 79, 122, 0.01) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        &:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow:
+                0 12px 32px rgba(0, 0, 0, 0.12),
+                0 2px 0 rgba(255, 255, 255, 0.8) inset;
+            border-color: rgba(220, 38, 38, 0.1);
+
+            &::after {
+                opacity: 1;
+            }
+        }
+
+        &:not(:last-child) {
+            margin-right: 1rem;
+            border-right: 1px solid rgba(220, 38, 38, 0.08);
+        }
+
+        &.clients-current-section,
+        &.clients-kyc-section {
+            .stat-group {
+                .stat-number {
+                    font-size: 1.7rem;
+                    font-weight: 600;
+                    background-clip: text;
+                    margin-bottom: 0;
+                    line-height: 1.1;
+                    display: flex;
+                    justify-content: center;
+                    width: 100%;
+                    transition: all 0.3s ease;
+                }
+
+                .stat-label {
+                    font-size: 0.8rem;
+                    color: @text-secondary;
+                    margin-top: 6px;
+                    white-space: nowrap;
+                }
+            }
+        }
+
+        .section-label {
+            font-size: 0.85rem;
+            text-align: center;
+            color: @text-secondary;
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-groups-container {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            position: relative;
+        }
+
+        .stat-group {
+            text-align: center;
+            min-width: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            position: relative;
+
+            &:not(:last-child):after {
+                content: '';
+                position: absolute;
+                top: 10%;
+                right: 0;
+                bottom: 10%;
+                width: 1px;
+                background: grey;
+            }
+
+            .stat-number {
+                font-size: 1.7rem;
+                font-weight: 600;
+                background-clip: text;
+                margin-bottom: 0;
+                line-height: 1.1;
+                display: flex;
+                justify-content: center;
+                width: 100%;
+                transition: all 0.3s ease;
+
+                &.high-risk {
+                    background: linear-gradient(135deg, @primary-red 0%, #dc2626 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                }
+            }
+
+            .stat-label {
+                font-size: 0.8rem;
+                color: @text-secondary;
+                margin-top: 6px;
+                white-space: nowrap;
+            }
+        }
+    }
+
+    // Responsive design
+    @media (max-width: 1024px) {
+        flex-wrap: wrap;
+        gap: 1rem;
+
+        .stats-section {
+            margin: 0.5rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        padding: 1rem;
+        gap: 1rem;
+
+        .stats-section {
+            min-width: 100%;
+            margin: 0.5rem 0;
+
+            .stat-groups-container {
+                justify-content: space-between;
+            }
+        }
+    }
+}

@@ -1,0 +1,332 @@
+@import '../../styles/variables.less';
+
+.pkr-report-page {
+    min-height: 100vh;
+    background: @secondary-bg;
+
+    .page-header {
+        background: @primary-bg;
+        padding: 1.5rem 2rem;
+        border-bottom: 1px solid @border-grey;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        h1 {
+            margin: 0;
+            color: @text-color;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .case-info {
+            margin: 0;
+            color: @text-secondary;
+            font-size: 0.9rem;
+        }
+    }
+
+    .report-container {
+        max-width: 1000px;
+        margin: 2rem auto;
+        padding: 0 2rem;
+
+        .report-header {
+            background: linear-gradient(135deg, @primary-red 0%, darken(@primary-red, 10%) 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px 12px 0 0;
+            margin-bottom: 0;
+
+            .header-content {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 1rem;
+
+                h2 {
+                    margin: 0;
+                    font-size: 1.8rem;
+                    font-weight: 600;
+                }
+
+                .case-id {
+                    margin: 0.5rem 0 0 0;
+                    opacity: 0.9;
+                    font-size: 0.9rem;
+                }
+            }
+
+            .completion-banner {
+                background: rgba(255, 255, 255, 0.15);
+                backdrop-filter: blur(10px);
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+
+                .completion-icon {
+                    font-size: 1.5rem;
+                }
+
+                .completion-text {
+                    font-weight: 500;
+                    font-size: 1.1rem;
+                }
+            }
+        }
+
+        .report-introduction {
+            background: @primary-bg;
+            padding: 2rem;
+            border-left: 4px solid @primary-red;
+            margin-bottom: 2rem;
+
+            h3 {
+                margin: 0 0 1rem 0;
+                color: @primary-red;
+                font-size: 1.3rem;
+            }
+
+            p {
+                margin: 0;
+                line-height: 1.6;
+                color: @text-color;
+                font-size: 1rem;
+            }
+        }
+
+        .report-content {
+            background: @primary-bg;
+            border-radius: 0 0 12px 12px;
+            padding: 2rem;
+
+            .report-section {
+                background: @secondary-bg;
+                border-radius: 8px;
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+                border: 1px solid @border-grey;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+                opacity: 0;
+                transform: translateY(20px);
+                animation: slideInUp 0.6s ease forwards;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+
+                .section-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-start;
+                    margin-bottom: 1rem;
+
+                    .section-title {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.75rem;
+
+                        .status-icon {
+                            font-size: 1.2rem;
+                        }
+
+                        h3 {
+                            margin: 0;
+                            color: @text-color;
+                            font-size: 1.2rem;
+                            font-weight: 600;
+                        }
+                    }
+
+                    .score-badge {
+                        background: @success-color;
+                        color: white;
+                        padding: 0.5rem 1rem;
+                        border-radius: 20px;
+                        font-weight: 600;
+
+                        .score-number {
+                            font-size: 1rem;
+                        }
+                    }
+                }
+
+                .section-details {
+                    .detail-item {
+                        display: flex;
+                        align-items: flex-start;
+                        gap: 0.75rem;
+                        margin-bottom: 0.75rem;
+
+                        &:last-child {
+                            margin-bottom: 0;
+                        }
+
+                        .bullet {
+                            color: @primary-red;
+                            font-weight: bold;
+                            margin-top: 0.1rem;
+                            flex-shrink: 0;
+                        }
+
+                        .detail-text {
+                            color: @text-color;
+                            line-height: 1.5;
+                            font-size: 0.95rem;
+                        }
+                    }
+                }
+            }
+        }
+
+        .overall-score {
+            background: @primary-bg;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            border: 2px solid @success-color;
+            box-shadow: 0 4px 20px rgba(40, 167, 69, 0.1);
+
+            .score-circle {
+                display: inline-block;
+                background: linear-gradient(135deg, @success-color 0%, darken(@success-color, 10%) 100%);
+                color: white;
+                border-radius: 50%;
+                width: 120px;
+                height: 120px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto 2rem auto;
+                box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+
+                .score-value {
+                    font-size: 2rem;
+                    font-weight: 700;
+                    line-height: 1;
+                }
+
+                .score-label {
+                    font-size: 0.8rem;
+                    margin-top: 0.25rem;
+                    opacity: 0.9;
+                }
+            }
+
+            .recommendation {
+                text-align: left;
+
+                h4 {
+                    margin: 0 0 1rem 0;
+                    color: @text-color;
+                    font-size: 1.3rem;
+                }
+
+                .recommendation-text {
+                    margin: 0 0 1.5rem 0;
+                    font-size: 1.1rem;
+                    color: @text-color;
+
+                    strong {
+                        color: @success-color;
+                    }
+                }
+
+                .recommendation-details {
+                    h5 {
+                        margin: 0 0 0.75rem 0;
+                        color: @primary-red;
+                        font-size: 1rem;
+                    }
+
+                    ul {
+                        margin: 0;
+                        padding-left: 1.5rem;
+
+                        li {
+                            margin-bottom: 0.5rem;
+                            color: @text-color;
+                            line-height: 1.4;
+
+                            &:last-child {
+                                margin-bottom: 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .report-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            padding-bottom: 2rem;
+
+            .action-button {
+                padding: 0.75rem 2rem;
+                border: none;
+                border-radius: 8px;
+                font-size: 1rem;
+                font-weight: 500;
+                cursor: pointer;
+                transition: all 0.3s ease;
+
+                &.primary {
+                    background: @primary-red;
+                    color: white;
+
+                    &:hover {
+                        background: darken(@primary-red, 10%);
+                        transform: translateY(-2px);
+                        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+                    }
+                }
+
+                &.secondary {
+                    background: @secondary-bg;
+                    color: @text-color;
+                    border: 1px solid @border-grey;
+
+                    &:hover {
+                        background: @primary-bg;
+                        border-color: @primary-red;
+                        color: @primary-red;
+                        transform: translateY(-2px);
+                        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                    }
+                }
+            }
+        }
+    }
+}
+
+@keyframes slideInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-in {
+    animation-fill-mode: forwards;
+}
+
+// Print styles
+@media print {
+    .pkr-report-page {
+        .report-actions {
+            display: none;
+        }
+
+        .report-section {
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+    }
+}

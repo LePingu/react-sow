@@ -1,0 +1,243 @@
+@import '../styles/variables.less';
+@import '../styles/mixins.less';
+
+// Beautiful animations matching Dashboard styling
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+@keyframes gentle-pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+
+    50% {
+        transform: scale(1.05);
+        opacity: 1;
+    }
+}
+
+.search-bar {
+    margin-bottom: 2rem;
+
+    .search-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        // Beautiful glass morphism background matching Dashboard
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.9) 100%);
+        border: 1.5px solid rgba(33, 33, 33, 0.4);
+        border-radius: 25px;
+        padding: 1rem 1.8rem;
+        backdrop-filter: blur(20px);
+        box-shadow:
+            0 8px 32px rgba(0, 0, 0, 0.1),
+            0 1px 0 rgba(255, 255, 255, 0.5) inset;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        max-width: 600px;
+        margin: 0 auto;
+        overflow: hidden;
+        animation: float 6s ease-in-out infinite;
+
+        // Add subtle shimmer effect like Dashboard
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        // Professional hover effect matching Dashboard
+        &:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow:
+                0 12px 48px rgba(0, 0, 0, 0.15),
+                0 2px 0 rgba(255, 255, 255, 0.8) inset;
+            border-color: rgba(220, 38, 38, 0.3);
+        }
+    }
+
+    &.focused .search-container {
+        transform: translateY(-4px) scale(1.02);
+        box-shadow:
+            0 12px 48px rgba(220, 38, 38, 0.2),
+            0 2px 0 rgba(255, 255, 255, 0.8) inset;
+        border-color: rgba(220, 38, 38, 0.4);
+    }
+
+    .search-icon {
+        color: @text-secondary;
+        margin-right: 1rem;
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 2;
+    }
+
+    &.focused .search-icon {
+        color: @primary-red;
+        transform: scale(1.1);
+    }
+
+    .search-form {
+        flex: 1;
+        position: relative;
+        z-index: 2;
+    }
+
+    .search-input {
+        width: 100%;
+        border: none;
+        background: transparent;
+        outline: none;
+        font-size: 1.1rem;
+        color: @text-primary;
+        font-weight: 500;
+
+        &::placeholder {
+            color: @text-secondary;
+            font-style: italic;
+            font-weight: 400;
+        }
+    }
+
+    .ai-indicator {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        margin-left: 1.2rem;
+        padding-left: 1.2rem;
+        border-left: 1px solid rgba(33, 33, 33, 0.2);
+        position: relative;
+        z-index: 2;
+
+        .ai-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, @primary-red, #dc2626);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            animation: gentle-pulse 3s ease-in-out infinite;
+            box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3);
+        }
+
+        .ai-label {
+            font-size: 0.9rem;
+            color: @text-primary;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+    }
+
+    .clear-button {
+        background: none;
+        border: none;
+        color: @text-secondary;
+        font-size: 1.6rem;
+        cursor: pointer;
+        margin-left: 0.7rem;
+        padding: 0;
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 2;
+
+        &:hover {
+            background: rgba(220, 38, 38, 0.1);
+            color: @primary-red;
+            transform: scale(1.1);
+        }
+    }
+
+    // Animations
+    @keyframes gentle-pulse {
+
+        0%,
+        100% {
+            transform: scale(1);
+            opacity: 0.8;
+        }
+
+        50% {
+            transform: scale(1.05);
+            opacity: 1;
+        }
+    }
+
+    // Responsive design
+    @media (max-width: 768px) {
+        .search-container {
+            padding: 0.8rem 1.2rem;
+            max-width: 100%;
+            animation: none; // Disable animations on mobile for performance
+        }
+
+        .ai-indicator {
+            margin-left: 0.7rem;
+            padding-left: 0.7rem;
+
+            .ai-icon {
+                width: 24px;
+                height: 24px;
+            }
+
+            .ai-label {
+                font-size: 0.8rem;
+                display: none; // Hide label on very small screens
+            }
+        }
+
+        .search-input {
+            font-size: 1rem;
+        }
+
+        .search-icon {
+            margin-right: 0.7rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .search-container {
+            padding: 0.7rem 1rem;
+        }
+
+        .ai-indicator .ai-label {
+            display: none;
+        }
+    }
+}

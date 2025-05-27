@@ -1,43 +1,86 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { type Node, type Edge, type NodeTypes, MarkerType, Handle, Position } from '@xyflow/react';
+import { type Node, type Edge, type NodeTypes, MarkerType } from '@xyflow/react';
 import { FlowDiagram } from '../flow-diagram';
+import { MainAgentNode, ChildAgentNode, OrchestratorNode } from '../../components/agent-nodes';
 import './PKRStatusPage.less';
 
-// Simplified custom node for orchestrator
-const OrchestratorNode = ({ data }: { data: any }) => (
-    <div className="orchestrator-node">
-        <Handle type="target" position={Position.Top} style={{ visibility: 'hidden' }} />
-        <div className="orchestrator-header">
-            <h3>🎯 Agent Orchestrator</h3>
-        </div>
-        <div className="orchestrator-content">
-            <p>{data.message}</p>
-            <span className="timestamp">{data.timestamp}</span>
-        </div>
-        <Handle type="source" position={Position.Bottom} style={{ visibility: 'hidden' }} />
-    </div>
-);
+// Agent configuration data
+const agentConfig = {
+    mainAgents: [
+        {
+            id: 'kyc-info-processor',
+            name: 'KYC Information Processor',
+            status: 'completed' as const,
+            position: { x: 100, y: 200 },
+            type: 'main'
+        },
+        {
+            id: 'kyc-profiler',
+            name: 'KYC Profiler',
+            status: 'completed' as const,
+            position: { x: 400, y: 200 },
+            type: 'main'
+        },
+        {
+            id: 'risk-assessor',
+            name: 'Risk Assessor',
+            status: 'pending' as const,
+            position: { x: 700, y: 200 },
+            type: 'main'
+        }
+    ],
+    childAgents: [
+        {
+            id: 'client-profile-writer',
+            name: 'Client Profile Writer',
+            status: 'completed' as const,
+            position: { x: 750, y: 350 },
+            type: 'child'
+        },
+        {
+            id: 'sow-corroboration-assessor',
+            name: 'SoW Corroboration Assessor',
+            status: 'pending' as const,
+            position: { x: 750, y: 350 },
+            type: 'child'
+        }
+    ]
+};
 
-// Simplified custom node for agents  
-const AgentNode = ({ data }: { data: any }) => (
-    <div className={`main-agent-flow-node ${data.isClickable ? 'clickable' : 'non-clickable'} ${data.status}`}>
-        <Handle type="target" position={Position.Top} style={{ visibility: 'hidden' }} />
-        <div className="agent-header">
-            <span className="status-icon">{data.statusIcon}</span>
-            <div className="agent-info">
-                <h4>{data.name}</h4>
-                {data.isClickable && <span className="click-indicator">👆</span>}
-            </div>
-        </div>
-        <div className="agent-status">
-            <span className={`status-badge ${data.status}`}>
-                {data.status}
-            </span>
-        </div>
-        <Handle type="source" position={Position.Bottom} style={{ visibility: 'hidden' }} />
-    </div>
-);
+// Edge configuration data
+const edgeConfig = [
+    {
+        id: 'e-orchestrator-kyc-info',
+        source: 'orchestrator',
+        target: 'kyc-info-processor',
+        style: { stroke: '#374151', strokeWidth: 2 }
+    },
+    {
+        id: 'e-orchestrator-kyc-profiler',
+        source: 'orchestrator',
+        target: 'kyc-profiler',
+        style: { stroke: '#374151', strokeWidth: 2 }
+    },
+    {
+        id: 'e-orchestrator-risk',
+        source: 'orchestrator',
+        target: 'risk-assessor',
+        style: { stroke: '#f97316', strokeWidth: 2 }
+    },
+    {
+        id: 'e-risk-writer',
+        source: 'risk-assessor',
+        target: 'client-profile-writer',
+        style: { stroke: '#f97316', strokeWidth: 2 }
+    },
+    {
+        id: 'e-risk-sow',
+        source: 'risk-assessor',
+        target: 'sow-corroboration-assessor',
+        style: { stroke: '#f97316', strokeWidth: 2 }
+    }
+];
 
 interface PKRStatusPageProps {
     isVisible?: boolean;
@@ -54,15 +97,16 @@ const PKRStatusPage: React.FC<PKRStatusPageProps> = ({ isVisible = true }) => {
     };
 
     const handleBackToDashboard = () => {
-        navigate('/');
+        navigate(-1);
     };
 
     const nodeTypes: NodeTypes = {
         orchestrator: OrchestratorNode,
-        agent: AgentNode,
+        mainAgent: MainAgentNode,
+        childAgent: ChildAgentNode,
     };
 
-    // Define nodes - keeping your existing node definitions but simplified
+    // Generate nodes from configuration
     const nodes: Node[] = [
         {
             id: 'orchestrator',
@@ -73,87 +117,38 @@ const PKRStatusPage: React.FC<PKRStatusPageProps> = ({ isVisible = true }) => {
                 timestamp: new Date().toLocaleTimeString()
             }
         },
-        {
-            id: 'kyc-info-processor',
-            type: 'agent',
-            position: { x: 100, y: 200 },
+        // Main agents
+        ...agentConfig.mainAgents.map(agent => ({
+            id: agent.id,
+            type: 'mainAgent',
+            position: agent.position,
             data: {
-                name: 'KYC Information Processor',
-                status: 'completed',
-                statusIcon: '✅',
-                isClickable: false,
-                onClick: () => handleAgentClick('kyc-info-processor', 'KYC Information Processor')
+                name: agent.name,
+                status: agent.status,
+                onClick: () => handleAgentClick(agent.id, agent.name)
             }
-        },
-        {
-            id: 'kyc-profiler',
-            type: 'agent',
-            position: { x: 400, y: 200 },
+        })),
+        // Child agents
+        ...agentConfig.childAgents.map(agent => ({
+            id: agent.id,
+            type: 'childAgent',
+            position: agent.position,
             data: {
-                name: 'KYC Profiler',
-                status: 'completed',
-                statusIcon: '✅',
-                isClickable: false,
-                onClick: () => handleAgentClick('kyc-profiler', 'KYC Profiler')
+                name: agent.name,
+                status: agent.status,
+                onClick: () => handleAgentClick(agent.id, agent.name)
             }
-        },
-        {
-            id: 'risk-assessor',
-            type: 'agent',
-            position: { x: 700, y: 200 },
-            data: {
-                name: 'Risk Assessor',
-                status: 'pending',
-                statusIcon: '⏳',
-                isClickable: false,
-                onClick: () => handleAgentClick('risk-assessor', 'Risk Assessor')
-            }
-        },
-        {
-            id: 'sow-corroboration-assessor',
-            type: 'agent',
-            position: { x: 750, y: 350 },
-            data: {
-                name: 'SoW Corroboration Assessor',
-                status: 'pending',
-                statusIcon: '⏳',
-                isClickable: true,
-                onClick: () => handleAgentClick('sow-corroboration-assessor', 'SoW Corroboration Assessor')
-            }
-        }
+        }))
     ];
 
-    // Define edges - keeping your existing edge definitions
-    const edges: Edge[] = [
-        {
-            id: 'e-orchestrator-kyc-info',
-            source: 'orchestrator',
-            target: 'kyc-info-processor',
-            style: { stroke: '#374151', strokeWidth: 2 },
-            markerEnd: { type: MarkerType.ArrowClosed, color: '#374151' }
-        },
-        {
-            id: 'e-orchestrator-kyc-profiler',
-            source: 'orchestrator',
-            target: 'kyc-profiler',
-            style: { stroke: '#374151', strokeWidth: 2 },
-            markerEnd: { type: MarkerType.ArrowClosed, color: '#374151' }
-        },
-        {
-            id: 'e-orchestrator-risk',
-            source: 'orchestrator',
-            target: 'risk-assessor',
-            style: { stroke: '#f97316', strokeWidth: 2 },
-            markerEnd: { type: MarkerType.ArrowClosed, color: '#f97316' }
-        },
-        {
-            id: 'e-risk-sow',
-            source: 'risk-assessor',
-            target: 'sow-corroboration-assessor',
-            style: { stroke: '#f97316', strokeWidth: 2 },
-            markerEnd: { type: MarkerType.ArrowClosed, color: '#f97316' }
-        }
-    ];
+    // Generate edges from configuration
+    const edges: Edge[] = edgeConfig.map(edge => ({
+        id: edge.id,
+        source: edge.source,
+        target: edge.target,
+        style: edge.style,
+        markerEnd: { type: MarkerType.ArrowClosed, color: edge.style.stroke }
+    }));
 
     if (!isVisible) return null;
 

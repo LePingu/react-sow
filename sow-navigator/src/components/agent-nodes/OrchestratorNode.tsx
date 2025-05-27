@@ -31,19 +31,7 @@ const OrchestratorNode: React.FC<OrchestratorNodeProps> = ({ data }) => {
                 type="source"
                 position={Position.Bottom}
                 id="output-1"
-                style={{ left: '25%' }}
-            />
-            <Handle
-                type="source"
-                position={Position.Bottom}
-                id="output-2"
                 style={{ left: '50%' }}
-            />
-            <Handle
-                type="source"
-                position={Position.Bottom}
-                id="output-3"
-                style={{ left: '75%' }}
             />
         </div>
     );
