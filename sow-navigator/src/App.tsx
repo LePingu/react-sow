@@ -2,10 +2,12 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Layout } from './features/layout'
 import { Dashboard } from './features/dashboard'
 import { PKRStatusPage } from './features/pkr-status'
-import { SoWAgenticOrchestration } from './features/agent-tree'
+// import { SoWAgenticOrchestration } from './features/agent-tree'
 import './App.less'
 import { DocumentProcessor } from './features/document-processor'
 import PKRReportPage from './features/pkr-status/PKRReportPage'
+import { MotionTest } from './components/MotionTest'
+import { PerformanceTest } from './components/PerformanceTest'
 
 function App() {
   return (
@@ -23,10 +25,16 @@ function App() {
           <Route path="/case/:caseId/report" element={<PKRReportPage />} />
 
           {/* Agent Execution Detail Route */}
-          <Route path="/case/:caseId/agent/:agentId" element={<SoWAgenticOrchestration />} />
+          {/* <Route path="/case/:caseId/agent/:agentId" element={<SoWAgenticOrchestration />} /> */}
 
           {/* Legacy Document Processing Route */}
           <Route path="/document-processor" element={<DocumentProcessor />} />
+
+          {/* Motion Test Route - For testing Framer Motion animations */}
+          <Route path="/motion-test" element={<MotionTest />} />
+
+          {/* Performance Test Route - For testing animation performance */}
+          <Route path="/performance-test" element={<PerformanceTest />} />
         </Routes>
       </Layout>
     </Router>

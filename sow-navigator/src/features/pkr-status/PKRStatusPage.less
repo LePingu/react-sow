@@ -156,3 +156,19 @@
         }
     }
 }
+
+// Motion container for Framer Motion animations
+.pkr-status-container {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+
+    // Ensure smooth hardware acceleration
+    will-change: transform, opacity;
+    transform: translateZ(0);
+
+    .pkr-flow {
+        width: 100%;
+        height: 100%;
+    }
+}

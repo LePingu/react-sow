@@ -38,10 +38,6 @@ const AgentNodeBase: React.FC<AgentNodeBaseProps> = ({
     const infoClassName = nodeType === 'main' ? 'agent-info' : 'child-agent-info';
     const descriptionClassName = nodeType === 'main' ? 'agent-description' : 'child-agent-description';
 
-    const boxShadow = nodeType === 'main'
-        ? `0 4px 12px ${statusColor}20`
-        : `0 2px 8px ${statusColor}15`;
-
     const opacity = isClickable ? (nodeType === 'main' ? 1 : 1) : (nodeType === 'main' ? 0.8 : 0.9);
 
     const finalClassName = nodeType === 'main'
@@ -66,13 +62,6 @@ const AgentNodeBase: React.FC<AgentNodeBaseProps> = ({
         initial: { scale: 1 },
         pulse: {
             scale: [1, 1.15, 1.05, 1.15, 1],
-            boxShadow: [
-                `0 4px 12px ${statusColor}20`,
-                `0 8px 32px ${statusColor}60`,
-                `0 6px 24px ${statusColor}40`,
-                `0 8px 32px ${statusColor}60`,
-                `0 4px 12px ${statusColor}20`
-            ],
             transition: {
                 duration: 1.5,
                 ease: "easeInOut",
@@ -107,7 +96,6 @@ const AgentNodeBase: React.FC<AgentNodeBaseProps> = ({
                     onClick={data.onClick}
                     style={{
                         borderColor: statusColor,
-                        boxShadow,
                         cursor: isClickable ? 'pointer' : 'default',
                         opacity
                     }}
@@ -127,7 +115,6 @@ const AgentNodeBase: React.FC<AgentNodeBaseProps> = ({
                 onClick={data.onClick}
                 style={{
                     borderColor: statusColor,
-                    boxShadow,
                     cursor: isClickable ? 'pointer' : 'default',
                     opacity
                 }}

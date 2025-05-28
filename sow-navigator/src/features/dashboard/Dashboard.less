@@ -1,6 +1,17 @@
 @import '../../styles/variables.less';
 @import '../../styles/mixins.less';
 
+// Motion container for Framer Motion animations - added for Phase 1
+.dashboard {
+    // Ensure smooth hardware acceleration for Framer Motion
+    will-change: transform, opacity;
+    transform: translateZ(0);
+
+    // Enable GPU acceleration for better performance
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
 // Add beautiful animations
 @keyframes float {
 
@@ -365,6 +376,40 @@
                     }
                 }
             }
+        }
+    }
+
+    .client-row {
+        // Smooth row hover interactions
+        border-radius: 8px;
+        transition: all 0.2s ease-out;
+        transform-origin: center;
+
+        &:hover {
+            // Professional shadow elevation
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+    }
+
+    .run-pkr-button {
+        // Enhanced button interactions
+        transform-origin: center;
+        border-radius: 8px;
+
+        &:hover {
+            // Subtle glow effect for banking CTA
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+        }
+    }
+
+    .section-icon {
+        // Interactive icon animations
+        display: inline-block;
+        cursor: pointer;
+        transition: transform 0.2s ease-out;
+
+        &:hover {
+            transform: scale(1.1);
         }
     }
 }

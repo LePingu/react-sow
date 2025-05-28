@@ -40,6 +40,11 @@
     overflow: hidden;
     position: relative;
 
+    // Banking-appropriate motion enhancements for Framer Motion
+    will-change: transform, opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+
     // Add a subtle shimmer effect
     &::before {
         content: '';
@@ -191,11 +196,18 @@
                 width: 100%;
                 transition: all 0.3s ease;
 
+                // Enable smooth transforms for motion
+                transform-origin: center;
+                transition: transform 0.2s ease-out;
+
                 &.high-risk {
                     background: linear-gradient(135deg, @primary-red 0%, #dc2626 100%);
                     -webkit-background-clip: text;
                     -webkit-text-fill-color: transparent;
                     background-clip: text;
+
+                    // Professional breathing effect for high-risk indicators
+                    animation: none; // Remove CSS animation, will be handled by Framer Motion
                 }
             }
 

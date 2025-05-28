@@ -1,4 +1,7 @@
 import React from 'react';
+import { motion } from 'framer-motion';
+import { useAccessibleMotion } from '../hooks/useAccessibleMotion';
+import { PROFESSIONAL_VARIANTS, BANKING_TRANSITIONS } from '../utils/motionPresets';
 import './StatsBanner.less';
 
 export interface StatsData {
@@ -18,68 +21,166 @@ export interface StatsBannerProps {
 }
 
 const StatsBanner: React.FC<StatsBannerProps> = ({ data }) => {
+    const { getTransition } = useAccessibleMotion();
+
     return (
-        <div className="stats-banner">
-            <div className="stats-section clients-current-section">
+        <motion.div
+            className="stats-banner"
+            variants={PROFESSIONAL_VARIANTS.staggerContainer}
+            initial="hidden"
+            animate="visible"
+            transition={getTransition(BANKING_TRANSITIONS.smooth)}
+        >
+            <motion.div
+                className="stats-section clients-current-section"
+                variants={PROFESSIONAL_VARIANTS.staggerItem}
+            >
                 <div className="stat-group">
-                    <div className="stat-number">{data.totalClients}</div>
+                    <motion.div
+                        className="stat-number"
+                        variants={PROFESSIONAL_VARIANTS.scaleIn}
+                    >
+                        {data.totalClients}
+                    </motion.div>
                     <div className="stat-label">Clients</div>
                 </div>
-            </div>
+            </motion.div>
 
-            <div className="stats-section clients-kyc-section">
+            <motion.div
+                className="stats-section clients-kyc-section"
+                variants={PROFESSIONAL_VARIANTS.staggerItem}
+            >
                 <div className="stat-group">
-                    <div className="stat-number">{data.clientsInKYCCycle}</div>
+                    <motion.div
+                        className="stat-number"
+                        variants={PROFESSIONAL_VARIANTS.scaleIn}
+                    >
+                        {data.clientsInKYCCycle}
+                    </motion.div>
                     <div className="stat-label">Clients in KYC Cycle</div>
                 </div>
-            </div>
+            </motion.div>
 
-            <div className="stats-section risk-section">
+            <motion.div
+                className="stats-section risk-section"
+                variants={PROFESSIONAL_VARIANTS.staggerItem}
+            >
                 <div className="section-label">Risk category</div>
-                <div className="stat-groups-container">
-                    <div className="stat-group">
-                        <div className="stat-number">{data.lowRiskPercentage}%</div>
+                <motion.div
+                    className="stat-groups-container"
+                    variants={PROFESSIONAL_VARIANTS.staggerContainer}
+                >
+                    <motion.div
+                        className="stat-group"
+                        variants={PROFESSIONAL_VARIANTS.staggerItem}
+                    >
+                        <motion.div
+                            className="stat-number"
+                            variants={PROFESSIONAL_VARIANTS.scaleIn}
+                        >
+                            {data.lowRiskPercentage}%
+                        </motion.div>
                         <div className="stat-label">Low</div>
-                    </div>
-                    <div className="stat-group">
-                        <div className="stat-number">{data.mediumRiskPercentage}%</div>
+                    </motion.div>
+                    <motion.div
+                        className="stat-group"
+                        variants={PROFESSIONAL_VARIANTS.staggerItem}
+                    >
+                        <motion.div
+                            className="stat-number"
+                            variants={PROFESSIONAL_VARIANTS.scaleIn}
+                        >
+                            {data.mediumRiskPercentage}%
+                        </motion.div>
                         <div className="stat-label">Medium</div>
-                    </div>
-                    <div className="stat-group">
-                        <div className="stat-number high-risk">{data.highRiskPercentage}%</div>
+                    </motion.div>
+                    <motion.div
+                        className="stat-group"
+                        variants={PROFESSIONAL_VARIANTS.staggerItem}
+                    >
+                        <motion.div
+                            className="stat-number high-risk"
+                            variants={PROFESSIONAL_VARIANTS.scaleIn}
+                        >
+                            {data.highRiskPercentage}%
+                        </motion.div>
                         <div className="stat-label">High</div>
-                    </div>
-                </div>
-            </div>
+                    </motion.div>
+                </motion.div>
+            </motion.div>
 
-            <div className="stats-section journey-section">
+            <motion.div
+                className="stats-section journey-section"
+                variants={PROFESSIONAL_VARIANTS.staggerItem}
+            >
                 <div className="section-label">% by journey</div>
-                <div className="stat-groups-container">
-                    <div className="stat-group">
-                        <div className="stat-number">{data.onboardingPercentage}%</div>
+                <motion.div
+                    className="stat-groups-container"
+                    variants={PROFESSIONAL_VARIANTS.staggerContainer}
+                >
+                    <motion.div
+                        className="stat-group"
+                        variants={PROFESSIONAL_VARIANTS.staggerItem}
+                    >
+                        <motion.div
+                            className="stat-number"
+                            variants={PROFESSIONAL_VARIANTS.scaleIn}
+                        >
+                            {data.onboardingPercentage}%
+                        </motion.div>
                         <div className="stat-label">Onboarding</div>
-                    </div>
-                    <div className="stat-group">
-                        <div className="stat-number">{data.pkrPercentage}%</div>
+                    </motion.div>
+                    <motion.div
+                        className="stat-group"
+                        variants={PROFESSIONAL_VARIANTS.staggerItem}
+                    >
+                        <motion.div
+                            className="stat-number"
+                            variants={PROFESSIONAL_VARIANTS.scaleIn}
+                        >
+                            {data.pkrPercentage}%
+                        </motion.div>
                         <div className="stat-label">PKR</div>
-                    </div>
-                </div>
-            </div>
+                    </motion.div>
+                </motion.div>
+            </motion.div>
 
-            <div className="stats-section location-section">
+            <motion.div
+                className="stats-section location-section"
+                variants={PROFESSIONAL_VARIANTS.staggerItem}
+            >
                 <div className="section-label">Location</div>
-                <div className="stat-groups-container">
-                    <div className="stat-group">
-                        <div className="stat-number">{data.singaporePercentage}%</div>
+                <motion.div
+                    className="stat-groups-container"
+                    variants={PROFESSIONAL_VARIANTS.staggerContainer}
+                >
+                    <motion.div
+                        className="stat-group"
+                        variants={PROFESSIONAL_VARIANTS.staggerItem}
+                    >
+                        <motion.div
+                            className="stat-number"
+                            variants={PROFESSIONAL_VARIANTS.scaleIn}
+                        >
+                            {data.singaporePercentage}%
+                        </motion.div>
                         <div className="stat-label">Singapore</div>
-                    </div>
-                    <div className="stat-group">
-                        <div className="stat-number">{data.hongKongPercentage}%</div>
+                    </motion.div>
+                    <motion.div
+                        className="stat-group"
+                        variants={PROFESSIONAL_VARIANTS.staggerItem}
+                    >
+                        <motion.div
+                            className="stat-number"
+                            variants={PROFESSIONAL_VARIANTS.scaleIn}
+                        >
+                            {data.hongKongPercentage}%
+                        </motion.div>
                         <div className="stat-label">Hong Kong</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    </motion.div>
+                </motion.div>
+            </motion.div>
+        </motion.div>
     );
 };
 

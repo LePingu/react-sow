@@ -1,9 +1,12 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { type Node, type Edge, type NodeTypes, type EdgeTypes, MarkerType } from '@xyflow/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { FlowDiagram } from '../flow-diagram';
 import { MainAgentNode, ChildAgentNode, OrchestratorNode } from '../../components/agent-nodes';
 import { AnimatedEdge } from '../../components';
+import { useAccessibleMotion } from '../../hooks/useAccessibleMotion';
+import { PROFESSIONAL_VARIANTS, BANKING_TRANSITIONS } from '../../utils/motionPresets';
 import './PKRStatusPage.less';
 
 // Agent configuration data
@@ -49,6 +52,38 @@ const agentConfig = {
     ]
 };
 
+// Helper function to determine edge status based on source and target nodes
+const getEdgeStatus = (sourceId: string, targetId: string): 'active' | 'pending' | 'completed' | 'default' => {
+    const allAgents = [...agentConfig.mainAgents, ...agentConfig.childAgents];
+    const sourceAgent = allAgents.find(agent => agent.id === sourceId);
+    const targetAgent = allAgents.find(agent => agent.id === targetId);
+
+    // Special case for orchestrator as source (orchestrator sends tasks to agents)
+    if (sourceId === 'orchestrator') {
+        if (targetAgent?.status === 'active') return 'active';
+        if (targetAgent?.status === 'completed') return 'completed';
+        return 'pending';
+    }
+
+    // For agent-to-agent connections (data flow between agents)
+    if (sourceAgent && targetAgent) {
+        // Edge is active when source is completed and target is actively processing
+        if (sourceAgent.status === 'completed' && targetAgent.status === 'active') {
+            return 'active';
+        }
+        // Edge is completed when both source and target are completed
+        if (sourceAgent.status === 'completed' && targetAgent.status === 'completed') {
+            return 'completed';
+        }
+        // Edge is pending when source is still active (not ready to send data)
+        if (sourceAgent.status === 'active' || sourceAgent.status === 'pending') {
+            return 'pending';
+        }
+    }
+
+    return 'default';
+};
+
 // Edge configuration data
 const edgeConfig = [
     {
@@ -70,21 +105,21 @@ const edgeConfig = [
         source: 'orchestrator',
         target: 'risk-assessor',
         type: 'animated',
-        style: { stroke: '#f97316', strokeWidth: 2 }
+        style: { stroke: '#374151', strokeWidth: 2 }
     },
     {
         id: 'e-risk-writer',
         source: 'risk-assessor',
         target: 'client-profile-writer',
-        type: 'smoothstep',
+        type: 'animated',
         style: { stroke: '#374151', strokeWidth: 2 }
     },
     {
         id: 'e-risk-sow',
         source: 'risk-assessor',
         target: 'sow-corroboration-assessor',
-        type: 'smoothstep',
-        style: { stroke: '#f97316', strokeWidth: 2 }
+        type: 'animated',
+        style: { stroke: '#374151', strokeWidth: 2 }
     }
 ];
 
@@ -95,6 +130,7 @@ interface PKRStatusPageProps {
 const PKRStatusPage: React.FC<PKRStatusPageProps> = ({ isVisible = true }) => {
     const { caseId } = useParams<{ caseId: string }>();
     const navigate = useNavigate();
+    const { getTransition } = useAccessibleMotion();
 
     const handleAgentClick = (agentId: string, agentName: string) => {
         if (agentId === 'sow-corroboration-assessor' || agentName.toLowerCase().includes('sow')) {
@@ -152,38 +188,45 @@ const PKRStatusPage: React.FC<PKRStatusPageProps> = ({ isVisible = true }) => {
     ];
 
     // Generate edges from configuration
-    const edges: Edge[] = edgeConfig.map(edge => ({
-        id: edge.id,
-        source: edge.source,
-        target: edge.target,
-        style: edge.style,
-        type: edge.type,
-        pathOptions: { offset: 10, borderRadius: 30 },
-        markerEnd: { type: MarkerType.ArrowClosed, color: edge.style.stroke }
-    }));
+    const edges: Edge[] = edgeConfig.map(edge => {
+        const edgeStatus = getEdgeStatus(edge.source, edge.target);
+        return {
+            id: edge.id,
+            source: edge.source,
+            target: edge.target,
+            style: edge.style,
+            type: edge.type,
+            data: { status: edgeStatus },
+            pathOptions: { offset: 10, borderRadius: 30 },
+            markerEnd: { type: MarkerType.ArrowClosed, color: edge.style.stroke }
+        };
+    });
 
     if (!isVisible) return null;
 
     return (
-        <FlowDiagram
-            nodes={nodes}
-            edges={edges}
-            nodeTypes={nodeTypes}
-            edgeTypes={edgeTypes}
-            onNodeClick={handleAgentClick}
-            className="pkr-flow"
-        />
-        // <div className="pkr-status-page">
-        //     {/* <div className="pkr-header">
-        //         <button className="back-button" onClick={handleBackToDashboard}>
-        //             ← Back to Dashboard
-        //         </button>
-        //         <h1>PKR Case Status - {caseId}</h1>
-        //         <p className="subtitle">Permanent KYC Review Agent Overview</p>
-        //     </div> */}
-
-
-        // </div>
+        <AnimatePresence mode="wait">
+            {isVisible && (
+                <motion.div
+                    key="pkr-status-page"
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    variants={PROFESSIONAL_VARIANTS.fadeIn}
+                    transition={getTransition(BANKING_TRANSITIONS.smooth)}
+                    className="pkr-status-container"
+                >
+                    <FlowDiagram
+                        nodes={nodes}
+                        edges={edges}
+                        nodeTypes={nodeTypes}
+                        edgeTypes={edgeTypes}
+                        onNodeClick={handleAgentClick}
+                        className="pkr-flow"
+                    />
+                </motion.div>
+            )}
+        </AnimatePresence>
     );
 };
 
