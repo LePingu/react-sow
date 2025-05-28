@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { DocumentUpload, IdIcon, AnimatedArrow, ProcessingLabel, CompletionMessage } from '../document-upload'
-import { AgentTreeView } from '../agent-tree'
+// import { AgentTreeView } from '../agent-tree'
 
 const DocumentProcessor = () => {
     const [isProcessing, setIsProcessing] = useState(false)
@@ -41,7 +41,7 @@ const DocumentProcessor = () => {
     if (showAgentTree) {
         return (
             <>
-                <AgentTreeView isVisible={showAgentTree} />
+                {/* <AgentTreeView isVisible={showAgentTree} /> */}
                 <button className="reset-button" onClick={resetWorkflow}>
                     ← Back to Document Upload
                 </button>

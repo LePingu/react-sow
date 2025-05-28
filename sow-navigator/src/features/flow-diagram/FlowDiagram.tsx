@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
 import {
     ReactFlow,
-    Background,
     Controls,
     useNodesState,
     useEdgesState,
@@ -9,7 +8,7 @@ import {
     type Node,
     type Edge,
     type NodeTypes,
-    BackgroundVariant
+    type EdgeTypes
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import './FlowDiagram.less';
@@ -18,6 +17,7 @@ interface FlowDiagramProps {
     nodes: Node[];
     edges: Edge[];
     nodeTypes?: NodeTypes;
+    edgeTypes?: EdgeTypes;
     onNodeClick?: (nodeId: string, nodeData: any) => void;
     className?: string;
     height?: string;
@@ -27,6 +27,7 @@ export const FlowDiagram: React.FC<FlowDiagramProps> = ({
     nodes: initialNodes,
     edges: initialEdges,
     nodeTypes,
+    edgeTypes,
     onNodeClick,
     className = '',
     height = 'calc(100vh - 200px)'
@@ -38,6 +39,8 @@ export const FlowDiagram: React.FC<FlowDiagramProps> = ({
         (params: any) => setEdges((eds) => addEdge(params, eds)),
         [setEdges]
     );
+
+    const proOptions = { hideAttribution: true };
 
     const handleNodeClick = useCallback((_event: React.MouseEvent, node: Node) => {
         // Handle direct onClick callback from node data
@@ -60,11 +63,17 @@ export const FlowDiagram: React.FC<FlowDiagramProps> = ({
                 onConnect={onConnect}
                 onNodeClick={handleNodeClick}
                 nodeTypes={nodeTypes}
+                edgeTypes={edgeTypes}
+                panOnDrag={false}
+                zoomOnScroll={false}
+                zoomOnPinch={false}
+                zoomOnDoubleClick={false}
+                proOptions={proOptions}
                 fitView
                 attributionPosition="bottom-left"
             >
-                <Background color="#ccc" variant={BackgroundVariant.Cross} />
-                <Controls />
+                {/* <Background color="#ffff" variant={BackgroundVariant.Lines} /> */}
+                <Controls showZoom={false} showInteractive={false} showFitView={false} />
             </ReactFlow>
         </div>
     );

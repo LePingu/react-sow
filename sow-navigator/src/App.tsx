@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Layout } from './features/layout'
 import { Dashboard } from './features/dashboard'
 import { PKRStatusPage } from './features/pkr-status'
-import { AgentTreeView } from './features/agent-tree'
+import { SoWAgenticOrchestration } from './features/agent-tree'
 import './App.less'
 import { DocumentProcessor } from './features/document-processor'
 import PKRReportPage from './features/pkr-status/PKRReportPage'
@@ -23,7 +23,7 @@ function App() {
           <Route path="/case/:caseId/report" element={<PKRReportPage />} />
 
           {/* Agent Execution Detail Route */}
-          <Route path="/case/:caseId/agent/:agentId" element={<AgentTreeView isVisible={true} />} />
+          <Route path="/case/:caseId/agent/:agentId" element={<SoWAgenticOrchestration />} />
 
           {/* Legacy Document Processing Route */}
           <Route path="/document-processor" element={<DocumentProcessor />} />

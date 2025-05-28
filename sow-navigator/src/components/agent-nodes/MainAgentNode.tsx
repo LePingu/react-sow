@@ -9,11 +9,13 @@ const MainAgentNode: React.FC<MainAgentNodeProps> = ({ data }) => {
     const description = `Main processing agent for ${data.name.toLowerCase()} workflows`;
 
     return (
-        <AgentNodeBase
-            data={data}
-            nodeType="main"
-            description={description}
-        />
+        <div style={{ position: 'relative' }}>
+            <AgentNodeBase
+                data={data}
+                nodeType="main"
+                description={description}
+            />
+        </div>
     );
 };
 

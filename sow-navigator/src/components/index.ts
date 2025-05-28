@@ -2,6 +2,9 @@
 export { default as StatsBanner } from './StatsBanner';
 export { default as SearchBar } from './SearchBar';
 
+// Edge Components
+export { default as AnimatedEdge } from './edges/AnimatedEdge';
+
 // Agent Node Components
 export * from './agent-nodes';
 
