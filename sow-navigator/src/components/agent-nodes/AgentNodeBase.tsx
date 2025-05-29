@@ -18,6 +18,21 @@ const AgentNodeBase: React.FC<AgentNodeBaseProps> = ({
     const [previousStatus, setPreviousStatus] = React.useState(data.status);
     const [shouldPulse, setShouldPulse] = React.useState(false);
 
+    // Debug logging
+    React.useEffect(() => {
+        console.log(`🔍 AgentNodeBase ${data.name} rendered with status:`, data.status);
+        console.log(`🔍 Full node data:`, data);
+        console.log(`🔍 Component props:`, { nodeType, className, description });
+    }, [data.status, data.name, data, nodeType, className, description]);
+
+    // Mount/unmount logging
+    React.useEffect(() => {
+        console.log(`🏗️ AgentNodeBase ${data.name} mounted`);
+        return () => {
+            console.log(`🗑️ AgentNodeBase ${data.name} unmounting`);
+        };
+    }, [data.name]);
+
     const isClickable = isClickableAgent(data.name);
     const statusColor = getStatusColor(data.status);
     const statusIcon = getStatusIcon(data.status);

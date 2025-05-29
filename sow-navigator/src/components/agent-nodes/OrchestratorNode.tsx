@@ -9,15 +9,31 @@ interface OrchestratorNodeProps {
     data: {
         message: string;
         timestamp: string;
+        status?: 'pending' | 'active' | 'completed';
     };
 }
 
 const OrchestratorNode: React.FC<OrchestratorNodeProps> = ({ data }) => {
     const { getTransition } = useAccessibleMotion();
 
+    // Get status display properties
+    const getStatusDisplay = (status?: string) => {
+        switch (status) {
+            case 'active':
+                return { text: 'COORDINATING', icon: '⚡', className: 'status-active' };
+            case 'completed':
+                return { text: 'COMPLETED', icon: '✅', className: 'status-completed' };
+            case 'pending':
+            default:
+                return { text: 'PENDING', icon: '🎯', className: 'status-pending' };
+        }
+    };
+
+    const statusDisplay = getStatusDisplay(data.status);
+
     return (
         <motion.div
-            className="orchestrator-flow-node"
+            className={`orchestrator-flow-node ${statusDisplay.className}`}
             variants={PROFESSIONAL_VARIANTS.scaleIn}
             initial="hidden"
             animate="visible"
@@ -29,12 +45,12 @@ const OrchestratorNode: React.FC<OrchestratorNodeProps> = ({ data }) => {
         >
             <div className="orchestrator-header">
                 <div className="orchestrator-icon">
-                    🎯
+                    {statusDisplay.icon}
                 </div>
                 <div className="orchestrator-info">
                     <h3>Orchestrator Agent</h3>
-                    <span className="status-badge">
-                        Monitoring
+                    <span className={`status-badge ${data.status || 'pending'}`}>
+                        {statusDisplay.text}
                     </span>
                 </div>
             </div>

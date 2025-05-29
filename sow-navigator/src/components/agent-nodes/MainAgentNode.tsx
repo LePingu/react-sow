@@ -12,8 +12,16 @@ const MainAgentNode: React.FC<MainAgentNodeProps> = ({ data }) => {
     const { getTransition } = useAccessibleMotion();
     const description = `Main processing agent for ${data.name.toLowerCase()} workflows`;
 
+    // Debug logging for MainAgentNode
+    React.useEffect(() => {
+        console.log(`🎯 MainAgentNode ${data.name} rendered with status:`, data.status);
+        console.log(`🎯 MainAgentNode data:`, data);
+    }, [data]);
+
     // Simple breathing animation for active status only
     const isActive = data.status === 'active';
+
+    console.log(`🎯 MainAgentNode ${data.name} rendering - isActive:`, isActive);
 
     return (
         <motion.div
@@ -41,4 +49,4 @@ const MainAgentNode: React.FC<MainAgentNodeProps> = ({ data }) => {
     );
 };
 
-export default MainAgentNode;
+export default React.memo(MainAgentNode);

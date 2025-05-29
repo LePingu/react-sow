@@ -2,7 +2,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Layout } from './features/layout'
 import { Dashboard } from './features/dashboard'
 import { PKRStatusPage } from './features/pkr-status'
-// import { SoWAgenticOrchestration } from './features/agent-tree'
+import { SoWCorroborationWorkflow } from './features/workflow-processing'
+import { TestNodePage } from './features/test-node'
+import SimpleTestPage from './features/test-node/SimpleTestPage'
 import './App.less'
 import { DocumentProcessor } from './features/document-processor'
 import PKRReportPage from './features/pkr-status/PKRReportPage'
@@ -25,7 +27,7 @@ function App() {
           <Route path="/case/:caseId/report" element={<PKRReportPage />} />
 
           {/* Agent Execution Detail Route */}
-          {/* <Route path="/case/:caseId/agent/:agentId" element={<SoWAgenticOrchestration />} /> */}
+          <Route path="/case/:caseId/agent/:agentId" element={<SoWCorroborationWorkflow isVisible={true} />} />
 
           {/* Legacy Document Processing Route */}
           <Route path="/document-processor" element={<DocumentProcessor />} />
@@ -35,6 +37,12 @@ function App() {
 
           {/* Performance Test Route - For testing animation performance */}
           <Route path="/performance-test" element={<PerformanceTest />} />
+
+          {/* Test Node Route - For testing single node status updates */}
+          <Route path="/test-node" element={<TestNodePage />} />
+
+          {/* Simple Test Route - For testing ultra-simple node status updates */}
+          <Route path="/simple-test" element={<SimpleTestPage />} />
         </Routes>
       </Layout>
     </Router>

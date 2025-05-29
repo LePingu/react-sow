@@ -2,9 +2,6 @@ import React, { useCallback } from 'react';
 import {
     ReactFlow,
     Controls,
-    useNodesState,
-    useEdgesState,
-    addEdge,
     type Node,
     type Edge,
     type NodeTypes,
@@ -18,26 +15,36 @@ interface FlowDiagramProps {
     edges: Edge[];
     nodeTypes?: NodeTypes;
     edgeTypes?: EdgeTypes;
+    onNodesChange?: (changes: any) => void;
+    onEdgesChange?: (changes: any) => void;
     onNodeClick?: (nodeId: string, nodeData: any) => void;
     className?: string;
     height?: string;
 }
 
 export const FlowDiagram: React.FC<FlowDiagramProps> = ({
-    nodes: initialNodes,
-    edges: initialEdges,
+    nodes,
+    edges,
     nodeTypes,
     edgeTypes,
+    onNodesChange,
+    onEdgesChange,
     onNodeClick,
     className = '',
     height = 'calc(100vh - 200px)'
 }) => {
-    const [nodes, , onNodesChange] = useNodesState(initialNodes);
-    const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+    // Use props directly instead of managing internal state
+    // const [nodes, , onNodesChange] = useNodesState(initialNodes);
+    // const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
     const onConnect = useCallback(
-        (params: any) => setEdges((eds) => addEdge(params, eds)),
-        [setEdges]
+        (params: any) => {
+            if (onEdgesChange) {
+                const newEdge = { ...params, id: `edge-${Date.now()}` };
+                onEdgesChange([{ type: 'add', item: newEdge }]);
+            }
+        },
+        [onEdgesChange]
     );
 
     const proOptions = { hideAttribution: true };
