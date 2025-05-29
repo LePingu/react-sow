@@ -18,10 +18,10 @@ interface SoWCorroborationWorkflowProps {
 // 7-second processing timeline
 const PROCESSING_TIMELINE = {
     ORCHESTRATOR_START: 500,      // 0.5s - Orchestrator becomes active
-    ORCHESTRATOR_COMPLETE: 1500,  // 1.5s - Orchestrator completes, agents start
+    AGENTS_START: 1500,           // 1.5s - Main agents start, orchestrator stays active
     ID_COMPLETE: 3000,            // 3s - ID Verification completes
     PAYSLIP_COMPLETE: 5000,       // 5s - Payslip Verification completes
-    WEB_COMPLETE: 7000,           // 7s - Web References completes
+    WEB_COMPLETE: 7000,           // 7s - Web References completes, orchestrator completes
     SHOW_BUTTON: 7500,            // 7.5s - Show "See Report" button
 } as const;
 
@@ -146,21 +146,11 @@ const SoWCorroborationWorkflow: React.FC<SoWCorroborationWorkflowProps> = ({
         }, PROCESSING_TIMELINE.ORCHESTRATOR_START);
         timers.push(timer1);
 
-        // Phase 2: Complete orchestrator, start main agents (1.5s)
+        // Phase 2: Start main agents (1.5s) - Keep orchestrator active
         const timer2 = setTimeout(() => {
-            console.log('✅ Phase 2: Orchestrator completed, main agents becoming active');
+            console.log('⚡ Phase 2: Main agents becoming active, orchestrator remains active');
             setNodes((nds) =>
                 nds.map((node) => {
-                    if (node.id === 'orchestrator') {
-                        return {
-                            ...node,
-                            data: {
-                                ...node.data,
-                                status: 'completed',
-                                timestamp: new Date().toLocaleTimeString(),
-                            }
-                        };
-                    }
                     if (node.type === 'mainAgent') {
                         return {
                             ...node,
@@ -181,7 +171,7 @@ const SoWCorroborationWorkflow: React.FC<SoWCorroborationWorkflowProps> = ({
                     data: { ...edge.data, status: 'active' }
                 }))
             );
-        }, PROCESSING_TIMELINE.ORCHESTRATOR_COMPLETE);
+        }, PROCESSING_TIMELINE.AGENTS_START);
         timers.push(timer2);
 
         // Phase 3: Complete ID Verification (3s)
@@ -250,9 +240,9 @@ const SoWCorroborationWorkflow: React.FC<SoWCorroborationWorkflowProps> = ({
         }, PROCESSING_TIMELINE.PAYSLIP_COMPLETE);
         timers.push(timer4);
 
-        // Phase 5: Complete Web References (7s)
+        // Phase 5: Complete Web References and Orchestrator (7s) - All work done
         const timer5 = setTimeout(() => {
-            console.log('✅ Phase 5: Web References completed');
+            console.log('✅ Phase 5: Web References completed, completing orchestrator');
             setNodes((nds) =>
                 nds.map((node) => {
                     if (node.id === 'web-references') {
@@ -261,6 +251,16 @@ const SoWCorroborationWorkflow: React.FC<SoWCorroborationWorkflowProps> = ({
                             data: {
                                 ...node.data,
                                 status: 'completed'
+                            }
+                        };
+                    }
+                    if (node.id === 'orchestrator') {
+                        return {
+                            ...node,
+                            data: {
+                                ...node.data,
+                                status: 'completed',
+                                timestamp: new Date().toLocaleTimeString(),
                             }
                         };
                     }

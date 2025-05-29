@@ -20,12 +20,13 @@
 
     // Status-specific styles
     &.status-pending {
-        border-color: #6b7280;
-        box-shadow: 0 4px 12px rgba(107, 114, 128, 0.2);
+        border-color: #dc2626;
+        box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        animation: pulse-glow-red 2s ease-in-out infinite;
 
         &:hover {
-            box-shadow: 0 6px 20px rgba(107, 114, 128, 0.3);
-            border-color: #4b5563;
+            box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
+            border-color: #b91c1c;
         }
     }
 
@@ -135,5 +136,20 @@
 
     100% {
         box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+    }
+}
+
+// Pulse glow animation for pending status (red)
+@keyframes pulse-glow-red {
+    0% {
+        box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 6px 20px rgba(220, 38, 38, 0.5);
+    }
+
+    100% {
+        box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
     }
 }
