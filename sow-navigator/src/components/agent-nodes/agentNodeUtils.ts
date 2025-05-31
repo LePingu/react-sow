@@ -25,10 +25,19 @@ export const isClickableAgent = (name: string) => {
 
 export type AgentStatus = 'active' | 'completed' | 'pending' | 'error';
 
+export interface SubStep {
+    id: string;
+    name: string;
+    status: 'pending' | 'active' | 'completed';
+}
+
 export interface BaseAgentNodeProps {
     data: {
         name: string;
         status: AgentStatus;
         onClick: () => void;
+        subSteps?: SubStep[];
+        activeMessage?: string;
+        activeSubSteps?: string[];
     };
 }

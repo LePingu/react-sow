@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useParams } from 'react-router-dom';
 import { type Node, type Edge, useNodesState, useEdgesState } from '@xyflow/react';
 import { FlowDiagram } from '../flow-diagram';
-import { AnimatedEdge } from '../../components';
+import { AnimatedEdge, CompletionBox } from '../../components';
 import { OrchestratorNode, MainAgentNode } from '../../components/agent-nodes';
 import { SummaryReport } from '../pkr-status';
 import { PROFESSIONAL_VARIANTS, BANKING_TRANSITIONS } from '../../utils/motionPresets';
@@ -17,12 +18,12 @@ interface SoWCorroborationWorkflowProps {
 
 // 7-second processing timeline
 const PROCESSING_TIMELINE = {
-    ORCHESTRATOR_START: 500,      // 0.5s - Orchestrator becomes active
-    AGENTS_START: 1500,           // 1.5s - Main agents start, orchestrator stays active
+    ORCHESTRATOR_START: 1000,      // 1s - Orchestrator becomes active
+    AGENTS_START: 2000,           // 2s - Main agents start, orchestrator stays active
     ID_COMPLETE: 3000,            // 3s - ID Verification completes
-    PAYSLIP_COMPLETE: 5000,       // 5s - Payslip Verification completes
-    WEB_COMPLETE: 7000,           // 7s - Web References completes, orchestrator completes
-    SHOW_BUTTON: 7500,            // 7.5s - Show "See Report" button
+    PAYSLIP_COMPLETE: 6000,       // 6s - Payslip Verification completes
+    WEB_COMPLETE: 9500,           // 9.5s - Web References completes, orchestrator completes
+    SHOW_BUTTON: 10000,            // 10s - Show "See Report" button
 } as const;
 
 // Initial nodes with pending status
@@ -34,7 +35,8 @@ const initialNodes: Node[] = [
         data: {
             message: 'SoW Corroboration Assessor - Coordinating verification agents',
             timestamp: new Date().toLocaleTimeString(),
-            status: 'pending'
+            status: 'pending',
+            onClick: () => console.log('Orchestrator clicked')
         }
     },
     {
@@ -43,7 +45,13 @@ const initialNodes: Node[] = [
         position: { x: 150, y: 250 },
         data: {
             name: 'ID Verification',
-            status: 'pending'
+            status: 'pending',
+            activeSubSteps: [
+                'Extract Document Info',
+                'Validate ID Format',
+                'Cross-reference Data'
+            ],
+            onClick: () => console.log('ID Verification clicked')
         }
     },
     {
@@ -52,7 +60,13 @@ const initialNodes: Node[] = [
         position: { x: 400, y: 250 },
         data: {
             name: 'Payslip Verification',
-            status: 'pending'
+            status: 'pending',
+            activeSubSteps: [
+                'Parse Payslip Data',
+                'Verify Employment',
+                'Validate Income'
+            ],
+            onClick: () => console.log('Payslip Verification clicked')
         }
     },
     {
@@ -61,7 +75,13 @@ const initialNodes: Node[] = [
         position: { x: 650, y: 250 },
         data: {
             name: 'Web References',
-            status: 'pending'
+            status: 'pending',
+            activeSubSteps: [
+                'Search Online Records',
+                'Cross-check Databases',
+                'Compile References'
+            ],
+            onClick: () => console.log('Web References clicked')
         }
     }
 ];
@@ -105,8 +125,10 @@ const edgeTypes = {
 const SoWCorroborationWorkflow: React.FC<SoWCorroborationWorkflowProps> = ({
     isVisible,
     onBack,
-    caseId
+    caseId: propCaseId
 }) => {
+    const { caseId: urlCaseId } = useParams<{ caseId: string }>();
+    const caseId = propCaseId || urlCaseId; // Use prop caseId if provided, otherwise use URL param
     const { getTransition } = useAccessibleMotion();
     const [showSummaryReport, setShowSummaryReport] = useState(false);
     const [showButton, setShowButton] = useState(false);
@@ -115,7 +137,7 @@ const SoWCorroborationWorkflow: React.FC<SoWCorroborationWorkflowProps> = ({
     // Use React Flow hooks with simple state management (following React Flow best practices)
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-    
+
     // Track when all agents are completed for progress bar animation
     const allAgentsCompleted = nodes.filter(n => n.data.status === 'completed' && n.type === 'mainAgent').length === 3;
 
@@ -353,120 +375,154 @@ const SoWCorroborationWorkflow: React.FC<SoWCorroborationWorkflowProps> = ({
                         </div>
                     </motion.div>
 
-                    <div className="workflow-content">
-                        <FlowDiagram
-                            nodes={nodes}
-                            edges={edges}
-                            onNodesChange={onNodesChange}
-                            onEdgesChange={onEdgesChange}
-                            nodeTypes={nodeTypes}
-                            edgeTypes={edgeTypes}
-                            className="corroboration-flow"
-                            height="60vh"
-                        />
-                    </div>
-
-                    {/* Progress Indicator */}
-                    <AnimatePresence>
-                        {!allAgentsCompleted && (
-                            <motion.div
-                                className="progress-section"
-                                variants={PROFESSIONAL_VARIANTS.slideInFromBottom}
-                                initial="hidden"
-                                animate="visible"
-                                exit={{
-                                    opacity: 0,
-                                    y: 20,
-                                    scale: 0.95
-                                }}
-                                transition={{
-                                    ...getTransition(BANKING_TRANSITIONS.smooth),
-                                    exit: { duration: 0.6, ease: "easeOut" }
-                                }}
-                            >
-                                <div className="progress-info">
-                                    <span className="progress-text">
-                                        Processing: {nodes.filter(n => n.data.status === 'completed' && n.type === 'mainAgent').length} of 3 agents completed
-                                    </span>
-                                    <div className="progress-bar">
-                                        <motion.div
-                                            className="progress-fill"
-                                            initial={{ width: '0%' }}
-                                            animate={{
-                                                width: `${((nodes.filter(n => n.data.status === 'completed' && n.type === 'mainAgent').length) / 3) * 100}%`
-                                            }}
-                                            transition={getTransition(BANKING_TRANSITIONS.smooth)}
-                                        />
-                                    </div>
-                                </div>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-
-                    {/* See Report Button */}
-                    <AnimatePresence>
-                        {showButton && (
-                            <motion.div
-                                className="report-button-section"
-                                initial={{
-                                    opacity: 0,
-                                    y: 30,
-                                    scale: 0.8
-                                }}
-                                animate={{
-                                    opacity: 1,
-                                    y: 0,
-                                    scale: 1
-                                }}
-                                exit={{
-                                    opacity: 0,
-                                    y: 20,
-                                    scale: 0.9
-                                }}
-                                transition={{
-                                    duration: 0.8,
-                                    ease: "easeIn",
-                                    type: "spring",
-                                    stiffness: 100,
-                                    damping: 15
-                                }}
-                            >
-                                <motion.button
-                                    className={`see-report-button ${isLoading ? 'loading' : ''}`}
-                                    onClick={handleSeeReport}
-                                    disabled={isLoading}
-                                    whileHover={!isLoading ? { scale: 1.05 } : {}}
-                                    whileTap={!isLoading ? { scale: 0.95 } : {}}
-                                    initial={{ rotateX: 15 }}
-                                    animate={{ rotateX: 0 }}
+                    <div className="workflow-main">
+                        {/* Completion Box - appears at top when completed */}
+                        <AnimatePresence>
+                            {allAgentsCompleted && (
+                                <motion.div
+                                    className="completion-section"
+                                    initial={{ opacity: 0, y: -50 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -20 }}
                                     transition={{
-                                        delay: 0.2,
-                                        duration: 0.6,
-                                        ease: "easeIn"
+                                        delay: 0.3,
+                                        ...getTransition(BANKING_TRANSITIONS.smooth)
                                     }}
                                 >
-                                    {isLoading ? (
-                                        <motion.div
-                                            className="loading-spinner"
-                                            animate={{ rotate: 360 }}
-                                            transition={{
-                                                duration: 1,
-                                                repeat: Infinity,
-                                                ease: "linear"
-                                            }}
-                                        >
-                                            ⏳
-                                        </motion.div>
-                                    ) : (
-                                        <>
-                                            <span className="button-icon">📊</span>
-                                            <span className="button-text">See Report</span>
-                                        </>
-                                    )}
-                                </motion.button>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+                                    <CompletionBox
+                                        overallScore={92}
+                                        accuracy={94}
+                                        hallucination={8}
+                                    />
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
+                        {/* See Report Button - appears after completion box */}
+                        <AnimatePresence>
+                            {showButton && (
+                                <motion.div
+                                    className="report-button-section"
+                                    initial={{
+                                        opacity: 0,
+                                        y: 30,
+                                        scale: 0.8
+                                    }}
+                                    animate={{
+                                        opacity: 1,
+                                        y: 0,
+                                        scale: 1
+                                    }}
+                                    exit={{
+                                        opacity: 0,
+                                        y: 20,
+                                        scale: 0.9
+                                    }}
+                                    transition={{
+                                        delay: 0.6,
+                                        duration: 0.8,
+                                        ease: "easeIn",
+                                        type: "spring",
+                                        stiffness: 100,
+                                        damping: 15
+                                    }}
+                                >
+                                    <motion.button
+                                        className={`see-report-button ${isLoading ? 'loading' : ''}`}
+                                        onClick={handleSeeReport}
+                                        disabled={isLoading}
+                                        whileHover={!isLoading ? { scale: 1.05 } : {}}
+                                        whileTap={!isLoading ? { scale: 0.95 } : {}}
+                                        initial={{ rotateX: 15 }}
+                                        animate={{ rotateX: 0 }}
+                                        transition={{
+                                            delay: 0.2,
+                                            duration: 0.6,
+                                            ease: "easeIn"
+                                        }}
+                                    >
+                                        {isLoading ? (
+                                            <motion.div
+                                                className="loading-spinner"
+                                                animate={{ rotate: 360 }}
+                                                transition={{
+                                                    duration: 1,
+                                                    repeat: Infinity,
+                                                    ease: "linear"
+                                                }}
+                                            >
+                                                ⏳
+                                            </motion.div>
+                                        ) : (
+                                            <>
+                                                <span className="button-icon">📊</span>
+                                                <span className="button-text">See Report</span>
+                                            </>
+                                        )}
+                                    </motion.button>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
+                        {/* Flow Diagram - always visible */}
+                        <motion.div 
+                            className="workflow-content"
+                            initial={{ opacity: 1 }}
+                            animate={{ 
+                                opacity: 1,
+                                minHeight: allAgentsCompleted ? "70vh" : "60vh"
+                            }}
+                            transition={getTransition(BANKING_TRANSITIONS.smooth)}
+                        >
+                            <FlowDiagram
+                                nodes={nodes}
+                                edges={edges}
+                                onNodesChange={onNodesChange}
+                                onEdgesChange={onEdgesChange}
+                                nodeTypes={nodeTypes}
+                                edgeTypes={edgeTypes}
+                                className="corroboration-flow"
+                                height="500px"
+                            />
+                        </motion.div>
+
+                        {/* Progress Indicator - only shows while processing */}
+                        <AnimatePresence>
+                            {!allAgentsCompleted && (
+                                <motion.div
+                                    className="progress-section"
+                                    variants={PROFESSIONAL_VARIANTS.slideInFromBottom}
+                                    initial="hidden"
+                                    animate="visible"
+                                    exit={{
+                                        opacity: 0,
+                                        y: 20,
+                                        scale: 0.95
+                                    }}
+                                    transition={{
+                                        ...getTransition(BANKING_TRANSITIONS.smooth),
+                                        exit: { duration: 0.6, ease: "easeOut" }
+                                    }}
+                                >
+                                    <div className="progress-info">
+                                        <span className="progress-text">
+                                            Processing: {nodes.filter(n => n.data.status === 'completed' && n.type === 'mainAgent').length} of 3 agents completed
+                                        </span>
+                                        <div className="progress-bar">
+                                            <motion.div
+                                                className="progress-fill"
+                                                initial={{ width: '0%' }}
+                                                animate={{
+                                                    width: `${((nodes.filter(n => n.data.status === 'completed' && n.type === 'mainAgent').length) / 3) * 100}%`
+                                                }}
+                                                transition={getTransition(BANKING_TRANSITIONS.smooth)}
+                                            />
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
                 </motion.div>
             )}
         </AnimatePresence>

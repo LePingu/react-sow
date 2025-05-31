@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ReactFlow, useNodesState, useEdgesState, Background, Panel, type Edge } from '@xyflow/react';
 import SimpleTestNode from './SimpleTestNode';
 import '@xyflow/react/dist/style.css';
@@ -11,7 +11,13 @@ const initialNodes = [
         position: { x: 250, y: 100 },
         data: {
             name: 'Simple Test Agent',
-            status: 'pending'
+            status: 'pending',
+            activeMessage: '',
+            activeSubSteps: [
+                'Initialize Process',
+                'Validate Input',
+                'Execute Task'
+            ]
         }
     }
 ];
@@ -27,16 +33,13 @@ const SimpleTestPage: React.FC = () => {
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, , onEdgesChange] = useEdgesState(initialEdges);
     const [nodeStatus, setNodeStatus] = useState('pending');
-    const [renderKey, setRenderKey] = useState(0);
 
     console.log('🔄 SimpleTestPage rendering with nodes:', nodes);
-    console.log('🔑 Current render key:', renderKey);
 
     const changeStatusToActive = () => {
         console.log('👆 SIMPLE TEST - Manual button click - updating node status to active');
 
         setNodes((nds) => {
-            console.log('📊 SIMPLE TEST - Current nodes before update:', nds);
             const updatedNodes = nds.map((node) => {
                 if (node.id === 'simple-test-1') {
                     console.log('🔄 SIMPLE TEST - Before update - node data:', node.data);
@@ -44,7 +47,9 @@ const SimpleTestPage: React.FC = () => {
                         ...node,
                         data: {
                             ...node.data,
-                            status: 'active'
+                            status: 'active',
+                            activeMessage: 'Processing in progress...'
+                            // activeSubSteps remain the same - they'll be displayed when active
                         }
                     };
                     console.log('✅ SIMPLE TEST - After update - node data:', updatedNode.data);
@@ -58,7 +63,6 @@ const SimpleTestPage: React.FC = () => {
         });
 
         setNodeStatus('active');
-        setRenderKey(prev => prev + 1);
     };
 
     const changeStatusToCompleted = () => {
@@ -71,7 +75,9 @@ const SimpleTestPage: React.FC = () => {
                         ...node,
                         data: {
                             ...node.data,
-                            status: 'completed'
+                            status: 'completed',
+                            activeMessage: 'Task completed successfully!'
+                            // activeSubSteps remain the same
                         }
                     };
                     console.log('✅ SIMPLE TEST - Completed update - node data:', updatedNode.data);
@@ -84,7 +90,6 @@ const SimpleTestPage: React.FC = () => {
         });
 
         setNodeStatus('completed');
-        setRenderKey(prev => prev + 1);
     };
 
     const resetToPending = () => {
@@ -97,7 +102,9 @@ const SimpleTestPage: React.FC = () => {
                         ...node,
                         data: {
                             ...node.data,
-                            status: 'pending'
+                            status: 'pending',
+                            activeMessage: ''
+                            // activeSubSteps remain the same - they won't be displayed when pending
                         }
                     };
                     console.log('🔄 SIMPLE TEST - Reset - node data:', updatedNode.data);
@@ -110,13 +117,11 @@ const SimpleTestPage: React.FC = () => {
         });
 
         setNodeStatus('pending');
-        setRenderKey(prev => prev + 1);
     };
 
     return (
         <div style={{ width: '100vw', height: '100vh' }}>
             <ReactFlow
-                key={renderKey}
                 nodes={nodes}
                 edges={edges}
                 onNodesChange={onNodesChange}
@@ -130,7 +135,8 @@ const SimpleTestPage: React.FC = () => {
                     <h3>Simple Node Status Test</h3>
                     <p><strong>Current Status:</strong> {nodeStatus}</p>
                     <p><strong>Node Data Status:</strong> {nodes[0]?.data?.status || 'unknown'}</p>
-                    <p><strong>Render Key:</strong> {renderKey}</p>
+                    <p><strong>Active Message:</strong> {nodes[0]?.data?.activeMessage || 'none'}</p>
+                    <p><strong>Sub-Steps Count:</strong> {nodes[0]?.data?.activeSubSteps?.length || 0}</p>
 
                     <div style={{ marginTop: '10px' }}>
                         <button

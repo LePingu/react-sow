@@ -18,11 +18,10 @@ interface ReportSection {
     score?: number;
 }
 
-const SummaryReport: React.FC<SummaryReportProps & { onDownloadReport?: () => void }> = ({
+const SummaryReport: React.FC<SummaryReportProps> = ({
     isVisible,
     onClose,
-    caseId,
-    onDownloadReport
+    caseId
 }) => {
     const navigate = useNavigate();
     const { prefersReducedMotion } = useAccessibleMotion();
@@ -45,9 +44,9 @@ const SummaryReport: React.FC<SummaryReportProps & { onDownloadReport?: () => vo
             details: [
                 'Low risk profile confirmed',
                 'No adverse media findings',
-                'Source of wealth documented'
+                '⚠️ Source of wealth documented'
             ],
-            score: 100
+            score: 90
         },
         {
             title: 'Compliance Screening',
@@ -100,13 +99,9 @@ const SummaryReport: React.FC<SummaryReportProps & { onDownloadReport?: () => vo
         }
     };
 
-    const handleDownload = useCallback(async () => {
-        try {
-            onDownloadReport?.();
-        } catch (error) {
-            console.error('Failed to download report:', error);
-        }
-    }, [onDownloadReport]);
+    const handleDownload = useCallback(() => {
+        navigate(`/case/${caseId}/report`);
+    }, [navigate, caseId]);
 
     const handleContinue = useCallback(() => {
         navigate('/');
@@ -204,7 +199,14 @@ const SummaryReport: React.FC<SummaryReportProps & { onDownloadReport?: () => vo
                                             }}
                                         >
                                             <span className="bullet">•</span>
-                                            <span className="detail-text">{detail}</span>
+                                            <div className="detail-content">
+                                                <span className="detail-text">{detail}</span>
+                                                {detail.includes('⚠️') && (
+                                                    <div className="human-review-hint">
+                                                        💡 This needs Human in the loop verification
+                                                    </div>
+                                                )}
+                                            </div>
                                         </motion.div>
                                     ))}
                                 </div>
@@ -223,13 +225,13 @@ const SummaryReport: React.FC<SummaryReportProps & { onDownloadReport?: () => vo
                         }}
                     >
                         <div className="score-circle">
-                            <div className="score-value">100%</div>
+                            <div className="score-value">90%</div>
                             <div className="score-label">Overall Score</div>
                         </div>
                         <div className="recommendation">
                             <h4>Final Recommendation</h4>
                             <p className="recommendation-text">
-                                ✅ <strong>Approved for Onboarding</strong> - All verification checks passed successfully
+                                ⚠️ <strong>Pending Human Review</strong> - Source of wealth verification requires manual confirmation
                             </p>
                         </div>
                     </motion.div>

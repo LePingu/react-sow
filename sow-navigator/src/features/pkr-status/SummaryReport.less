@@ -189,10 +189,24 @@
                 line-height: 1.5;
             }
 
-            .detail-text {
-                color: @text-primary;
-                line-height: 1.5;
+            .detail-content {
                 flex: 1;
+                
+                .detail-text {
+                    color: @text-primary;
+                    line-height: 1.5;
+                }
+
+                .human-review-hint {
+                    margin-top: 0.3rem;
+                    padding: 0.4rem 0.8rem;
+                    background: rgba(255, 193, 7, 0.1);
+                    border: 1px solid rgba(255, 193, 7, 0.3);
+                    border-radius: 4px;
+                    font-size: 0.8rem;
+                    color: #b8860b;
+                    font-style: italic;
+                }
             }
         }
     }

@@ -6,11 +6,17 @@
     ],
     "customizations": {
         "vscode": {
-            "vscode": {
-                "extensions": [
-                    "dbaeumer.vscode-eslint", // For JavaScript/React linting
-                    "esbenp.prettier-vscode",
-                ]
+            "extensions": [
+                "dbaeumer.vscode-eslint", // For JavaScript/React linting
+                "esbenp.prettier-vscode",
+                "saoudrizwan.claude-dev",
+                "ms-vscode.vscode-typescript-next"
+            ],
+            "settings": {
+                "editor.formatOnSave": true,
+                "eslint.alwaysShowRuleFailuresAsWarnings": true,
+                "prettier.requireConfig": true,
+                "prettier.disableLanguages": []
             }
         }
     },

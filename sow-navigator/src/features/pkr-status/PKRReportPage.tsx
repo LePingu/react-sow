@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './PKRReportPage.less';
 
@@ -6,6 +6,11 @@ import './PKRReportPage.less';
 const PKRReportPage: React.FC = () => {
     const { caseId } = useParams<{ caseId: string }>();
     const navigate = useNavigate();
+    const [isSourceOfWealthConfirmed, setIsSourceOfWealthConfirmed] = useState(false);
+
+    const handleConfirmReview = () => {
+        setIsSourceOfWealthConfirmed(true);
+    };
 
     // All numbers at 100%
     const reportData = [
@@ -27,11 +32,11 @@ const PKRReportPage: React.FC = () => {
             details: [
                 'Comprehensive risk profiling completed using AI-driven analytics',
                 'No adverse media findings across 500+ international databases',
-                'Source of wealth thoroughly documented and verified',
+                `${isSourceOfWealthConfirmed ? '✅' : '⚠️'} Source of wealth thoroughly documented and verified`,
                 'Transaction pattern analysis shows consistent legitimate activity',
                 'Credit history review indicates excellent financial standing'
             ],
-            score: 100
+            score: isSourceOfWealthConfirmed ? 100 : 90
         },
         {
             title: 'Compliance Screening',
@@ -71,6 +76,9 @@ const PKRReportPage: React.FC = () => {
         }
     ];
 
+    // Calculate overall score based on confirmation state
+    const overallScore = isSourceOfWealthConfirmed ? 100 : 90;
+
     return (
         <div className="pkr-report-page">
             <div className="page-header">
@@ -104,7 +112,7 @@ const PKRReportPage: React.FC = () => {
                                     <h3>{section.title}</h3>
                                 </div>
                                 <div className="score-badge">
-                                    <span className="score-number">100%</span>
+                                    <span className="score-number">{section.score}%</span>
                                 </div>
                             </div>
                             <div className="section-details">
@@ -112,6 +120,14 @@ const PKRReportPage: React.FC = () => {
                                     <div key={detailIndex} className="detail-item">
                                         <span className="bullet">•</span>
                                         <span className="detail-text">{detail}</span>
+                                        {detail.includes('⚠️') && !isSourceOfWealthConfirmed && (
+                                            <button 
+                                                className="confirm-review-button"
+                                                onClick={handleConfirmReview}
+                                            >
+                                                Confirm This Review
+                                            </button>
+                                        )}
                                     </div>
                                 ))}
                             </div>
@@ -121,13 +137,17 @@ const PKRReportPage: React.FC = () => {
 
                 <div className="overall-score visible">
                     <div className="score-circle">
-                        <div className="score-value">100%</div>
+                        <div className="score-value">{overallScore}%</div>
                         <div className="score-label">Overall Score</div>
                     </div>
                     <div className="recommendation">
                         <h4>Final Recommendation</h4>
                         <p className="recommendation-text">
-                            ✅ <strong>Approved for Onboarding</strong> - All verification checks passed successfully with exceptional scores across all assessment categories
+                            {isSourceOfWealthConfirmed ? (
+                                <>✅ <strong>Approved for Onboarding</strong> - All verification checks passed successfully with exceptional scores across all assessment categories</>
+                            ) : (
+                                <>⚠️ <strong>Pending Human Review</strong> - Source of wealth verification requires manual confirmation before final approval</>
+                            )}
                         </p>
                         <div className="recommendation-details">
                             <h5>Next Steps:</h5>

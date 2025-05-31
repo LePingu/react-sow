@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useCallback } from 'react';
 import {
     ReactFlow,
+    ReactFlowProvider,
     Controls,
     type Node,
     type Edge,
@@ -61,27 +63,29 @@ export const FlowDiagram: React.FC<FlowDiagramProps> = ({
     }, [onNodeClick]);
 
     return (
-        <div className={`flow-diagram ${className}`} style={{ height }}>
-            <ReactFlow
-                nodes={nodes}
-                edges={edges}
-                onNodesChange={onNodesChange}
-                onEdgesChange={onEdgesChange}
-                onConnect={onConnect}
-                onNodeClick={handleNodeClick}
-                nodeTypes={nodeTypes}
-                edgeTypes={edgeTypes}
-                panOnDrag={false}
-                zoomOnScroll={false}
-                zoomOnPinch={false}
-                zoomOnDoubleClick={false}
-                proOptions={proOptions}
-                fitView
-                attributionPosition="bottom-left"
-            >
-                {/* <Background color="#ffff" variant={BackgroundVariant.Lines} /> */}
-                <Controls showZoom={false} showInteractive={false} showFitView={false} />
-            </ReactFlow>
-        </div>
+        <ReactFlowProvider>
+            <div className={`flow-diagram ${className}`} style={{ height }}>
+                <ReactFlow
+                    nodes={nodes}
+                    edges={edges}
+                    onNodesChange={onNodesChange}
+                    onEdgesChange={onEdgesChange}
+                    onConnect={onConnect}
+                    onNodeClick={handleNodeClick}
+                    nodeTypes={nodeTypes}
+                    edgeTypes={edgeTypes}
+                    panOnDrag={false}
+                    zoomOnScroll={false}
+                    zoomOnPinch={false}
+                    zoomOnDoubleClick={false}
+                    proOptions={proOptions}
+                    fitView
+                    attributionPosition="bottom-left"
+                >
+                    {/* <Background color="#ffff" variant={BackgroundVariant.Lines} /> */}
+                    <Controls showZoom={false} showInteractive={false} showFitView={false} />
+                </ReactFlow>
+            </div>
+        </ReactFlowProvider>
     );
 };
