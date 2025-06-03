@@ -5,12 +5,9 @@
     background: #ffffff;
     border-radius: 20px;
     padding: 2rem;
-    margin: 1.5rem 0;
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.1),
-        0 1px 0 rgba(255, 255, 255, 0.5) inset;
-    border: 1.5px solid rgba(33, 33, 33, 0.1);
-    backdrop-filter: blur(20px);
+    margin: 1.5rem 2rem; // Add horizontal margin
+    width: calc(100% - 4rem); // Take full width minus margins
+    // Remove all borders and shadows for seamless appearance
     will-change: transform, opacity;
     transform: translateZ(0);
     backface-visibility: hidden;
@@ -29,16 +26,36 @@
         align-items: center;
         justify-content: space-between;
         gap: 2rem;
+        position: relative;
+
+        // Extended green background that covers the entire content area
+        &::before {
+            content: '';
+            position: absolute;
+            top: -1rem;
+            left: -1rem;
+            right: -1rem;
+            bottom: -1rem;
+            background: rgba(34, 197, 94, 0.1); // Match agent-section color
+            border-radius: 16px;
+            z-index: 0;
+        }
+
+        // Ensure content is above the background
+        > * {
+            position: relative;
+            z-index: 1;
+        }
 
         .agent-section {
             flex: 1;
             display: flex;
             align-items: center;
             gap: 1.5rem;
-            background: rgba(34, 197, 94, 0.1);
+            background: rgba(34, 197, 94, 0.1); // Same as extended background
             border-radius: 16px;
             padding: 1.5rem;
-            border: 1px solid rgba(34, 197, 94, 0.2);
+            // Remove border to blend seamlessly
 
             .agent-icon {
                 font-size: 2.5rem;
@@ -49,7 +66,7 @@
                 height: 60px;
                 background: rgba(34, 197, 94, 0.15);
                 border-radius: 12px;
-                border: 1px solid rgba(34, 197, 94, 0.3);
+                // Remove border for seamless appearance
                 flex-shrink: 0;
             }
 
@@ -125,11 +142,19 @@
     // Responsive design
     @media (max-width: 768px) {
         padding: 1.5rem;
-        margin: 1rem 0;
+        margin: 1rem 1rem; // Smaller margin on mobile
+        width: calc(100% - 2rem); // Adjust width for smaller margin
 
         .completion-content {
             flex-direction: column;
             gap: 1.5rem;
+
+            &::before {
+                top: -0.5rem;
+                left: -0.5rem;
+                right: -0.5rem;
+                bottom: -0.5rem;
+            }
 
             .agent-section {
                 flex-direction: column;

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import ConfirmationChatPanel from './ConfirmationChatPanel';
 import './PKRReportPage.less';
 
 // This page reuses the summary report visual style for a printable, beautiful report
@@ -7,9 +8,19 @@ const PKRReportPage: React.FC = () => {
     const { caseId } = useParams<{ caseId: string }>();
     const navigate = useNavigate();
     const [isSourceOfWealthConfirmed, setIsSourceOfWealthConfirmed] = useState(false);
+    const [showConfirmationChat, setShowConfirmationChat] = useState(false);
 
     const handleConfirmReview = () => {
+        setShowConfirmationChat(true);
+    };
+
+    const handleChatConfirm = () => {
         setIsSourceOfWealthConfirmed(true);
+        setShowConfirmationChat(false);
+    };
+
+    const handleChatClose = () => {
+        setShowConfirmationChat(false);
     };
 
     // All numbers at 100%
@@ -170,6 +181,12 @@ const PKRReportPage: React.FC = () => {
                     </button>
                 </div>
             </div>
+
+            <ConfirmationChatPanel
+                isVisible={showConfirmationChat}
+                onConfirm={handleChatConfirm}
+                onClose={handleChatClose}
+            />
         </div>
     );
 };
