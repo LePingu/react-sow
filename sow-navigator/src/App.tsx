@@ -10,6 +10,7 @@ import { DocumentProcessor } from './features/document-processor'
 import PKRReportPage from './features/pkr-status/PKRReportPage'
 import { MotionTest } from './components/MotionTest'
 import { PerformanceTest } from './components/PerformanceTest'
+import { CaseManagement } from './features/case-management'
 
 function App() {
   return (
@@ -25,6 +26,9 @@ function App() {
 
           {/* PKR Report Page Route */}
           <Route path="/case/:caseId/report" element={<PKRReportPage />} />
+
+          {/* Case Management Route */}
+          <Route path="/case/:caseId/management" element={<CaseManagement />} />
 
           {/* Agent Execution Detail Route */}
           <Route path="/case/:caseId/agent/:agentId" element={<SoWCorroborationWorkflow isVisible={true} />} />

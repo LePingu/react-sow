@@ -1,0 +1,32 @@
+@import '../../styles/variables.less';
+
+.task-column {
+  border: 1px solid rgba(222, 226, 230, 0.4);
+  border-radius: 8px;
+  padding: 16px;
+  background-color: rgba(248, 249, 250, 0.3);
+
+  .column-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #212529;
+    margin: 0 0 20px 0;
+    text-align: center;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #dee2e6;
+  }
+
+  .task-list {
+    display: flex;
+    flex-direction: column;
+    
+    .task-item:last-child {
+      margin-bottom: 0;
+      
+      .task-circle-container .connecting-line,
+      .task-circle-container .separation-line {
+        display: none;
+      }
+    }
+  }
+}
