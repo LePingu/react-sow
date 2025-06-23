@@ -11,6 +11,7 @@ import PKRReportPage from './features/pkr-status/PKRReportPage'
 import { MotionTest } from './components/MotionTest'
 import { PerformanceTest } from './components/PerformanceTest'
 import { CaseManagement } from './features/case-management'
+import { NameScreening } from './features/name-screening'
 
 function App() {
   return (
@@ -29,6 +30,10 @@ function App() {
 
           {/* Case Management Route */}
           <Route path="/case/:caseId/management" element={<CaseManagement />} />
+
+          {/* Name Screening Route */}
+          <Route path="/name-screening" element={<NameScreening />} />
+          <Route path="/case/:caseId/name-screening" element={<NameScreening />} />
 
           {/* Agent Execution Detail Route */}
           <Route path="/case/:caseId/agent/:agentId" element={<SoWCorroborationWorkflow isVisible={true} />} />

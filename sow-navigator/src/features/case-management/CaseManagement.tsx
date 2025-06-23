@@ -40,57 +40,58 @@ export const CaseManagement: React.FC = () => {
   const handleTerminationCancel = () => {
     setShowTerminationDialog(false)
   }
+
   const columns = [
     {
       title: "Documents & Forms",
       tasks: [
-        { text: "Preparation", status: "not-assigned", statusText: "Not Assigned" },
-        { text: "Submission", status: "not-assigned", statusText: "Not Assigned" },
-        { text: "Review", status: "not-assigned", statusText: "Not Assigned" },
-        { text: "Done", status: "done", statusText: "" },
-        { text: "Final Check Review", status: "not-assigned", statusText: "Not Assigned" },
-        { text: "Final Check Rectification (if required)", status: "not-assigned", statusText: "Not Assigned" },
-        { text: "Done", status: "done", statusText: "" }
+        { text: "Preparation", status: "not-assigned" as const, statusText: "Not Assigned" },
+        { text: "Submission", status: "not-assigned" as const, statusText: "Not Assigned" },
+        { text: "Review", status: "not-assigned" as const, statusText: "Not Assigned" },
+        { text: "Done", status: "done" as const, statusText: "" },
+        { text: "Final Check Review", status: "not-assigned" as const, statusText: "Not Assigned" },
+        { text: "Final Check Rectification (if required)", status: "not-assigned" as const, statusText: "Not Assigned" },
+        { text: "Done", status: "done" as const, statusText: "" }
       ]
     },
     {
       title: "Name Screening",
       tasks: [
-        { text: "Pre-check", status: "not-assigned", statusText: "Not Assigned" },
-        { text: "Rectification", status: "not-assigned", statusText: "Not Assigned" },
-        { text: "1st Level Discounting (Maker)", status: "not-assigned", statusText: "Not Assigned" },
-        { text: "1st Level Discounting (Checker)", status: "not-assigned", statusText: "Not Assigned" },
-        { text: "CA Justification", status: "not-assigned", statusText: "Not Assigned" },
-        { text: "Quality Assurance", status: "not-assigned", statusText: "Not Assigned" },
-        { text: "Done", status: "done", statusText: "" }
+        { text: "Pre-check", status: "not-assigned" as const, statusText: "Not Assigned" },
+        { text: "Rectification", status: "not-assigned" as const, statusText: "Not Assigned" },
+        { text: "1st Level Discounting (Maker)", status: "not-assigned" as const, statusText: "Not Assigned" },
+        { text: "1st Level Discounting (Checker)", status: "not-assigned" as const, statusText: "Not Assigned" },
+        { text: "CA Justification", status: "not-assigned" as const, statusText: "Not Assigned" },
+        { text: "Quality Assurance", status: "not-assigned" as const, statusText: "Not Assigned" },
+        { text: "Done", status: "done" as const, statusText: "" }
       ]
     },
     {
       title: "Client Profile",
       tasks: [
-        { text: "CPAC Draft", status: "not-assigned", statusText: "Not Assigned" },
-        { text: "CPAC Review", status: "not-assigned", statusText: "Not Assigned" },
-        { text: "Done", status: "done", statusText: "" }
+        { text: "CPAC Draft", status: "not-assigned" as const, statusText: "Not Assigned" },
+        { text: "CPAC Review", status: "not-assigned" as const, statusText: "Not Assigned" },
+        { text: "Done", status: "done" as const, statusText: "" }
       ]
     },
     {
       title: "Approval",
       tasks: [
-        { text: "MTH Approval", status: "not-assigned", statusText: "Not Assigned" },
-        { text: "Other Approvals", status: "not-assigned", statusText: "Not Assigned" }
+        { text: "MTH Approval", status: "not-assigned" as const, statusText: "Not Assigned" },
+        { text: "Other Approvals", status: "not-assigned" as const, statusText: "Not Assigned" }
       ]
     },
     {
       title: "Account Activation",
       tasks: [
-        { text: "Pre-Conversion", status: "not-assigned", statusText: "Not Assigned" },
-        { text: "CM Rectification (if required)", status: "not-assigned", statusText: "Not Assigned" },
-        { text: "Ready for Conversion (if required)", status: "not-assigned", statusText: "Not Assigned" },
-        { text: "Static Data", status: "not-assigned", statusText: "Not Assigned" },
-        { text: "Account Activation", status: "not-assigned", statusText: "Not Assigned" },
-        { text: "Welcome Letter Generation", status: "not-assigned", statusText: "Not Assigned" },
-        { text: "Welcome Letter Review", status: "not-assigned", statusText: "Not Assigned" },
-        { text: "Done", status: "done", statusText: "" }
+        { text: "Pre-Conversion", status: "not-assigned" as const, statusText: "Not Assigned" },
+        { text: "CM Rectification (if required)", status: "not-assigned" as const, statusText: "Not Assigned" },
+        { text: "Ready for Conversion (if required)", status: "not-assigned" as const, statusText: "Not Assigned" },
+        { text: "Static Data", status: "not-assigned" as const, statusText: "Not Assigned" },
+        { text: "Account Activation", status: "not-assigned" as const, statusText: "Not Assigned" },
+        { text: "Welcome Letter Generation", status: "not-assigned" as const, statusText: "Not Assigned" },
+        { text: "Welcome Letter Review", status: "not-assigned" as const, statusText: "Not Assigned" },
+        { text: "Done", status: "done" as const, statusText: "" }
       ]
     }
   ]

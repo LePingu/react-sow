@@ -12,6 +12,8 @@
   "dependencies": {
     "@types/react-router-dom": "^5.3.3",
     "@xyflow/react": "^12.6.4",
+    "ag-grid-community": "^33.3.2",
+    "ag-grid-react": "^33.3.2",
     "framer-motion": "^12.12.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
