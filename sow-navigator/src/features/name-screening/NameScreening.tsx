@@ -23,6 +23,7 @@ interface NameScreeningData {
 export const NameScreening: React.FC = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false)
     const { getTransition } = useAccessibleMotion()
+    // TODO: Remove with normal license
     ModuleRegistry.registerModules([AllCommunityModule]);
 
     const rowData: NameScreeningData[] = [
@@ -148,6 +149,7 @@ export const NameScreening: React.FC = () => {
         }
     ]
 
+    // TODO: Probbaly should come from real data
     const nameScreeningTasks = [
         { text: "Pre-check", status: "not-assigned" as const, statusText: "Not Assigned" },
         { text: "Rectification", status: "not-assigned" as const, statusText: "Not Assigned" },
@@ -180,6 +182,7 @@ export const NameScreening: React.FC = () => {
                         <span className="rejection-count">
                             Rejection Count <span className="count-badge">4</span>
                         </span>
+                        {/* TODO: Use uwr button with side panel icon */}
                         <button 
                             className="panel-icon-btn"
                             onClick={toggleTimeline}
@@ -188,6 +191,7 @@ export const NameScreening: React.FC = () => {
                             📊
                         </button>
                     </div>
+                    {/* TODO: Use uwr buttons */}
                     <div className="action-buttons">
                         <button className="btn btn-outline">Reassign Batch</button>
                         <button className="btn btn-outline">Download Template</button>
@@ -200,6 +204,7 @@ export const NameScreening: React.FC = () => {
                 <div className={`main-content ${sidebarOpen ? 'sidebar-open' : ''}`}>
                     <div className="batch-name-list">
                         <h3>Batch Name List</h3>
+                        {/* TODO: use uwr datatable here */}
                         <div className="ag-theme-alpine grid-container">
                             <AgGridReact
                                 rowData={rowData}
